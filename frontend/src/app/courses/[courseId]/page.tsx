@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "~/server/db";
 import { courses } from "~/server/db";
 import { SearchParams } from "next/dist/server/request/search-params";
-import { getLangFromServer } from "~/utils/language";
+import { getLang } from "~/utils/language";
 import CourseCarousel from "./_components/CourseCarousel";
 
 interface CourseProps {
@@ -14,7 +14,7 @@ interface CourseProps {
 }
 
 const CoursePage = async ({ params, searchParams }: CourseProps) => {
-  const { translation } = await getLangFromServer(searchParams);
+  const { translation } = await getLang(searchParams);
   const pageParams = await params;
 
   const courseIdNum = parseInt(pageParams.courseId, 10);
