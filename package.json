@@ -1,0 +1,13 @@
+{
+  "name": "forum-project",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "yaniv <yanivzaxdev@gmail.com>",
+  "license": "MIT",
+  "workspaces":[
+    "frontend",
+    "backend"
+
+  ]
+}
