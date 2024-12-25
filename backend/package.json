@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "main": "dist/index.js",
+   "main": "dist/api/index.js",
   "dependencies": {
     "@types/node": "^22.10.2",
     "cors": "^2.8.5",
