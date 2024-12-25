@@ -15,14 +15,13 @@ app.use(cors({origin: process.env.CORS_ORIGIN}));
 // Routes
 app.use('/api', courseRouter);  // This will prefix all routes with /api
 
-app.get('/test-courses', async (req, res) => {
-  try {
-    const allCourses = await db.select().from(courses);
-    res.json(allCourses);
-  } catch (error) {
-    res.status(500).json({error: 'Failed to fetch courses'});
-  }
+
+// Add this before your other routes
+app.get('/', (req, res) => {
+  res.json({message: 'Server is running'});
 });
+
+
 
 app.get('/api/test', (req, res) => {
   res.json({message: 'Hello'});
