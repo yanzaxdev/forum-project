@@ -8,7 +8,7 @@
     "pg": "^8.13.1"
   },
   "scripts": {
-    "start": "node -r tsconfig-paths/register src/index.js",
+    "start": "node -r tsconfig-paths/register src/index.ts",
      "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "build": "tsc",
     "d:generate-schema": "npx drizzle-kit introspect --config src/db/config/drizzle.ts",
