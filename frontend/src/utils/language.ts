@@ -1,7 +1,7 @@
 import {SearchParams} from 'next/dist/server/request/search-params';
 import {xTrans} from '~/translations';
 
-export async function getLangFromServer(searchParams?: SearchParams) {
+export async function getLang(searchParams?: SearchParams) {
   const sp = await searchParams;
   const lang = sp?.lang === 'en' ? 'en' : 'he';
   const isHeb = lang === 'he';
