@@ -5,7 +5,7 @@ import {createTable} from './tableCreator';
 
 
 export const courses = createTable(
-    'course', {
+    'courses', {
       id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
       titleEn: varchar('title_en', {length: 256}).notNull(),
       titleHe: varchar('title_he', {length: 256}).notNull(),
