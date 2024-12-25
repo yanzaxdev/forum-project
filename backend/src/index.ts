@@ -5,8 +5,6 @@ import {courses, db} from '~/db';
 
 import courseRouter from './routes/courseRoutes';
 
-// import courseRouter from './routes/courseRoutes';
-
 dotenv.config();
 
 const app = express();
