@@ -7,7 +7,7 @@ import { Providers } from "./providers";
 import NavBar from "~/components/Navbar";
 import { Sheet } from "~/components/ui/sheet";
 import ForumSheet from "~/components/ForumSheet";
-import { getLangFromServer } from "~/utils/language";
+import { getLang } from "~/utils/language";
 
 const FONT_ASSISTANT = Assistant({
   subsets: ["hebrew"],
@@ -39,7 +39,7 @@ interface RootLayoutProps {
 }
 
 const RootLayout = async ({ children }: RootLayoutProps) => {
-  const { lang } = await getLangFromServer();
+  const { lang } = await getLang();
 
   return (
     <html

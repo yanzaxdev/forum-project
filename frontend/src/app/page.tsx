@@ -1,4 +1,4 @@
-import { getLangFromServer } from "../utils/language";
+import { getLang } from "../utils/language";
 import { cn } from "~/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +10,7 @@ interface HomePageProps {
 }
 
 const HomePage = async ({ searchParams }: HomePageProps) => {
-  const { translation } = await getLangFromServer(searchParams);
+  const { translation } = await getLang(searchParams);
 
   return (
     <main

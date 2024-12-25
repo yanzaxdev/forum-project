@@ -6,12 +6,16 @@ frontend/.env
 frontend/.env.local
 frontend/.env.development
 frontend/dist
+frontend/.vscode
 
 backend/node_modules
 backend/.env
 backend/.env.local
 backend/.env.development
 backend/dist
+backend/.vscode
+
+.vscode
 
 
 # dependencies
