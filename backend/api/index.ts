@@ -10,7 +10,8 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for all routes
-app.use(cors({origin: process.env.CORS_ORIGIN}));
+// app.use(cors({origin: process.env.CORS_ORIGIN}));
+app.use(cors())
 
 // Routes
 app.use('/api', courseRouter);  // This will prefix all routes with /api
