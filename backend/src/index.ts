@@ -8,7 +8,6 @@ import courseRouter from './routes/courseRoutes';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3001;
 
 // Enable CORS for all routes
 app.use(cors({origin: process.env.CORS_ORIGIN}));
@@ -29,8 +28,13 @@ app.get('/api/test', (req, res) => {
   res.json({message: 'Hello'});
 });
 
-app.listen(port, () => {
-  console.log(`Backend server is running at http://localhost:${port}`);
-});
+// Remove the app.listen() for Vercel deployment
+// Only keep this during local development
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.log(`Backend server is running at http://localhost:${port}`);
+  });
+}
 
 export default app;
