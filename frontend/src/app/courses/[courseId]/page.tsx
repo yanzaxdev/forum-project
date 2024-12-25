@@ -5,6 +5,8 @@ import { courses } from "~/server/db";
 import { SearchParams } from "next/dist/server/request/search-params";
 import { getLang } from "~/utils/language";
 import CourseCarousel from "./_components/CourseCarousel";
+import { tryCatch } from "~/utils/tryCatch";
+import { expressAPI } from "~/server/express";
 
 interface CourseProps {
   params: {
@@ -20,13 +22,16 @@ const CoursePage = async ({ params, searchParams }: CourseProps) => {
   const courseIdNum = parseInt(pageParams.courseId, 10);
   if (isNaN(courseIdNum)) notFound();
 
-  const [course] = await db
-    .select()
-    .from(courses)
-    .where(eq(courses.id, courseIdNum))
-    .limit(1);
+  const [success, result] = await tryCatch(
+    expressAPI.get(`/api/courses/${courseIdNum}`),
+  );
 
-  if (!course) notFound();
+  if (!success) {
+    console.error(result);
+    notFound(); // Throw a 404 Not Found error
+  }
+
+  const course = result;
 
   return (
     <main dir={translation._dir} className="flex flex-1 flex-col py-1">
