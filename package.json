@@ -9,6 +9,7 @@
     "frontend",
     "backend"
   ],
-  "packageManager": "yarn@3.6.4"
+  
+"packageManager": "yarn@1.22.22"
 
 }
