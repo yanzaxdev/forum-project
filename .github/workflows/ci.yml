@@ -32,7 +32,7 @@ jobs:
         run: yarn install
         
       - name: Verify TypeScript compilation
-        run: yarn workspace frontend run type-check
+        run: yarn workspace frontend run typecheck
         
       - name: Check code quality
         run: yarn workspace frontend run lint
@@ -65,7 +65,7 @@ jobs:
         run: yarn install
         
       - name: Verify TypeScript compilation
-        run: yarn workspace backend run type-check
+        run: yarn workspace backend run typecheck
         
       - name: Check code quality
         run: yarn workspace backend run lint

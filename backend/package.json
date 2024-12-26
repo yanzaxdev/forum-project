@@ -16,6 +16,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/api/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts",
     "deploy": "npm run build && npm start",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register api/index.ts",
     "d:generate-schema": "npx drizzle-kit introspect --config src/db/config/drizzle.ts",
