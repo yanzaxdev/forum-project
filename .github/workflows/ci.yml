@@ -11,54 +11,58 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./frontend  # Adjust this path to match your frontend directory
+        working-directory: ./frontend
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      - name: Configure Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'  # Point to the root yarn.lock
+          cache-dependency-path: './yarn.lock'
+          corepack: true
           
-      - name: Install dependencies
+      - name: Install project dependencies
         run: yarn install
         
-      - name: Type check
+      - name: Verify TypeScript compilation
         run: yarn workspace frontend run type-check
         
-      - name: Lint
+      - name: Check code quality
         run: yarn workspace frontend run lint
         
-      - name: Build
+      - name: Create production build
         run: yarn workspace frontend run build
 
   backend:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend  # Adjust this path to match your backend directory
+        working-directory: ./backend
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
       
-      - name: Setup Node.js
+      - name: Configure Node.js environment
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: './yarn.lock'  # Point to the root yarn.lock
+          cache-dependency-path: './yarn.lock'
+          corepack: true
           
-      - name: Install dependencies
+      - name: Install project dependencies
         run: yarn install
         
-      - name: Type check
+      - name: Verify TypeScript compilation
         run: yarn workspace backend run type-check
         
-      - name: Lint
+      - name: Check code quality
         run: yarn workspace backend run lint
         
-      - name: Build
+      - name: Create production build
         run: yarn workspace backend run build
