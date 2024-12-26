@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Sun, Moon, House, Menu } from "lucide-react";
 import { cn } from "~/lib/utils";

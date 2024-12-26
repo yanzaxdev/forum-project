@@ -1,11 +1,7 @@
 // Base URL for the backend API, using an environment variable or defaulting to
 // localhost
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:3001';
 
-// Basic type for API responses
-type ApiResponse<T> = {
-  data: T; status: number;
-};
 
 
 export const expressAPI = {
@@ -20,7 +16,7 @@ export const expressAPI = {
       if (!response.ok) {
         throw new Error(`${response.statusText}`);
       }
-      return await response.json();
+      return await response.json() as unknown;
     } catch (error) {
       throw error;
     }
@@ -32,7 +28,7 @@ export const expressAPI = {
    * @param data - The data to send in the body of the POST request.
    * @returns The response data as JSON.
    */
-  post: async (url: string, data: any) => {
+  post: async (url: string, data: unknown) => {
     try {
       const response = await fetch(`${baseUrl}${url}`, {
         method: 'POST',
@@ -44,7 +40,7 @@ export const expressAPI = {
       if (!response.ok) {
         throw new Error(`${response.statusText}`);
       }
-      return await response.json();
+      return await response.json() as unknown;
     } catch (error) {
       throw error;
     }
@@ -56,7 +52,7 @@ export const expressAPI = {
    * @param data - The data to send in the body of the PUT request.
    * @returns The response data as JSON.
    */
-  put: async (url: string, data: any) => {
+  put: async (url: string, data: unknown) => {
     try {
       const response = await fetch(`${baseUrl}${url}`, {
         method: 'PUT',
@@ -68,7 +64,7 @@ export const expressAPI = {
       if (!response.ok) {
         throw new Error(`${response.statusText}`);
       }
-      return await response.json();
+      return await response.json() as unknown;
     } catch (error) {
       throw error;
     }
@@ -87,7 +83,7 @@ export const expressAPI = {
       if (!response.ok) {
         throw new Error(`${response.statusText}`);
       }
-      return await response.json();
+      return await response.json() as unknown;
     } catch (error) {
       throw error;
     }

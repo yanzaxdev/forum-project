@@ -9,9 +9,9 @@ import { courses } from "~/server/db/schema/courses";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Badge } from "./ui/badge";
 
-type CourseCardProps = {
+interface CourseCardProps {
   course: InferSelectModel<typeof courses>;
-};
+}
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const router = useRouter();

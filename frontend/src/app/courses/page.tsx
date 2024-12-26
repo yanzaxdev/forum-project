@@ -1,4 +1,3 @@
-import { db } from "~/server/db";
 import { courses } from "~/server/db";
 import { getLang } from "../../utils/language";
 import { tryCatch } from "~/utils/tryCatch";
