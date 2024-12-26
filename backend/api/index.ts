@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/api/test', (req, res) => {
-  res.json({message: 'Hello'});
+  res.json({message: 'Hello world'});
 });
 
 if (process.env.CORS_ORIGIN === 'http://localhost:3000') {
