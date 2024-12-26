@@ -25,6 +25,9 @@ jobs:
           cache-dependency-path: './yarn.lock'
           corepack: true
           
+      - name: Enable Corepack
+        run: corepack enable
+          
       - name: Install project dependencies
         run: yarn install
         
@@ -54,6 +57,9 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: './yarn.lock'
           corepack: true
+          
+      - name: Enable Corepack
+        run: corepack enable
           
       - name: Install project dependencies
         run: yarn install
