@@ -26,7 +26,9 @@ const defaultLanguageContext: LanguageContextType = {
   isHeb: false,
   t: xTrans.en,
   langParam: "",
-  setLanguage: () => console.log("no context provider"),
+  setLanguage: () => {
+    throw new Error("setLanguage not implemented");
+  },
 };
 
 const LanguageContext = createContext<LanguageContextType>(
