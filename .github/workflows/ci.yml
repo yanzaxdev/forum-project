@@ -21,19 +21,19 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: './frontend/yarn.lock'
+          cache-dependency-path: './yarn.lock'  # Point to the root yarn.lock
           
       - name: Install dependencies
         run: yarn install
         
       - name: Type check
-        run: yarn type-check
+        run: yarn workspace frontend run type-check
         
       - name: Lint
-        run: yarn lint
+        run: yarn workspace frontend run lint
         
       - name: Build
-        run: yarn build
+        run: yarn workspace frontend run build
 
   backend:
     runs-on: ubuntu-latest
@@ -49,16 +49,16 @@ jobs:
         with:
           node-version: '20'
           cache: 'yarn'
-          cache-dependency-path: './backend/yarn.lock'
+          cache-dependency-path: './yarn.lock'  # Point to the root yarn.lock
           
       - name: Install dependencies
         run: yarn install
         
       - name: Type check
-        run: yarn type-check
+        run: yarn workspace backend run type-check
         
       - name: Lint
-        run: yarn lint
+        run: yarn workspace backend run lint
         
       - name: Build
-        run: yarn build
+        run: yarn workspace backend run build
