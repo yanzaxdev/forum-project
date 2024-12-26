@@ -29,6 +29,7 @@ app.get('/api/test', (req, res) => {
 
 if (process.env.CORS_ORIGIN === 'http://localhost:3000') {
   app.listen(3001, () => {
+    // eslint-disable-next-line no-console
     console.log('Server is running on http://localhost:3001');
   });
 }

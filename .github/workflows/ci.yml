@@ -12,6 +12,10 @@ jobs:
     defaults:
       run:
         working-directory: ./frontend
+    env:
+      # Add all required environment variables here
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+      # Add any other required environment variables
 
     steps:
       - name: Check out repository
