@@ -9,12 +9,12 @@ on:
 jobs:
   frontend:
     runs-on: ubuntu-latest
+    environment: forum
     defaults:
       run:
         working-directory: ./frontend
     env:
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -47,6 +47,7 @@ jobs:
 
   backend:
     runs-on: ubuntu-latest
+    environment: forum
     defaults:
       run:
         working-directory: ./backend
