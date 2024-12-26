@@ -24,4 +24,5 @@ const config = {
     "drizzle/enforce-update-with-where" :
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ]
   }
-} module.exports = config;
+};
+module.exports = config;
