@@ -1,8 +1,9 @@
 // controllers/courseController.ts
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
-import {db} from '~/db';
-import {courses} from '~/db/schema';
+
+import {db} from '../db';
+import {courses} from '../db/schema';
 
 interface CourseParams {
   id: string;
