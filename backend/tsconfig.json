@@ -117,7 +117,7 @@
   
    "exclude": [
     "node_modules",
-    ".eslintrc.cjs",
+    ".eslint.config.js",
     "*.config.js",
     "*.config.cjs"
   ]

@@ -1,5 +1,5 @@
 import {sql} from 'drizzle-orm';
-import {decimal, index, integer, pgTableCreator, text, timestamp, varchar,} from 'drizzle-orm/pg-core';
+import {index, integer, timestamp, varchar,} from 'drizzle-orm/pg-core';
 
 import {createTable} from './tableCreator';
 
