@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 
 // Enable CORS for all routes
-// app.use(cors({origin: process.env.CORS_ORIGIN}));
+app.use(cors({origin: process.env.CORS_ORIGIN}));
 app.use(cors())
 
 // Routes
@@ -26,6 +26,12 @@ app.get('/', (req, res) => {
 app.get('/api/test', (req, res) => {
   res.json({message: 'Hello'});
 });
+
+if (process.env.CORS_ORIGIN === 'http://localhost:3000') {
+  app.listen(3001, () => {
+    console.log('Server is running on http://localhost:3001');
+  });
+}
 
 
 export default app;
