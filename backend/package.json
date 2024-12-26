@@ -1,8 +1,9 @@
 {
   "name": "backend",
-   "main": "dist/api/index.js",
+  "main": "dist/api/index.js",
   "dependencies": {
     "@types/node": "^22.10.2",
+    "@vercel/postgres": "^0.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.2",
