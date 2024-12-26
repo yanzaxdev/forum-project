@@ -21,7 +21,8 @@
     "d:migrate": "npx drizzle-kit migrate --config src/db/config/drizzle.ts",
     "d:rollback": "npx drizzle-kit rollback --config src/db/config/drizzle.ts",
     "d:studio": "npx drizzle-kit studio --config src/db/config/drizzle.ts",
-    "d:push": "npx drizzle-kit push --config src/db/config/drizzle.ts"
+    "d:push": "npx drizzle-kit push --config src/db/config/drizzle.ts",
+    "vercel-build": "echo" 
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
