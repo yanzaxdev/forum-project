@@ -36,7 +36,7 @@ const CourseCarouselContent: FC<CourseCarouselContentProps> = ({
                 "text-gray-900 dark:text-white",
               )}
             >
-              {t[tab.id as keyof typeof t]}
+              {t[tab.id]}
             </h2>
             <div
               className={cn(
@@ -44,7 +44,7 @@ const CourseCarouselContent: FC<CourseCarouselContentProps> = ({
                 "text-gray-600 dark:text-gray-300",
               )}
             >
-              {t[tab.id as keyof typeof t]}
+              {t[tab.id]}
             </div>
           </article>
         </CarouselItem>

@@ -1,13 +1,19 @@
 import { InferSelectModel } from "drizzle-orm";
-import { Book, MessageCircle, MessageSquare, Users } from "lucide-react";
+import {
+  Book,
+  LucideIcon,
+  MessageCircle,
+  MessageSquare,
+  Users,
+} from "lucide-react";
 import { courses } from "~/server/db";
 import { xTrans } from "~/translations";
 
-export type TabItem = {
+export interface TabItem {
   id: keyof typeof xTrans.en;
   title: string;
-  icon: any;
-};
+  icon: LucideIcon;
+}
 
 export interface TabbedContentProps {
   course: InferSelectModel<typeof courses>;

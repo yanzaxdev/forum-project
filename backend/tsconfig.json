@@ -114,7 +114,11 @@
   "include": [
     "api/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
+  
+   "exclude": [
+    "node_modules",
+    ".eslint.config.js",
+    "*.config.js",
+    "*.config.cjs"
   ]
 }

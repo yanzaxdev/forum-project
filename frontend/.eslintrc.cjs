@@ -9,11 +9,13 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked"
   ],
   "rules" : {
+    'no-console' : [ 'warn', {allow : [ 'warn', 'error' ]} ],
     "@typescript-eslint/array-type" : "off",
     // "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/consistent-type-imports" : [
       "warn", {"prefer" : "type-imports", "fixStyle" : "inline-type-imports"}
     ],
+    "@typescript-eslint/consistent-type-imports" : "off",
     "@typescript-eslint/no-unused-vars" :
         [ "warn", {"argsIgnorePattern" : "^_"} ],
     "@typescript-eslint/require-await" : "off",
@@ -24,4 +26,5 @@ const config = {
     "drizzle/enforce-update-with-where" :
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ]
   }
-} module.exports = config;
+};
+module.exports = config;

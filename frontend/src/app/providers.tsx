@@ -26,7 +26,9 @@ const defaultLanguageContext: LanguageContextType = {
   isHeb: false,
   t: xTrans.en,
   langParam: "",
-  setLanguage: () => {},
+  setLanguage: () => {
+    throw new Error("setLanguage not implemented");
+  },
 };
 
 const LanguageContext = createContext<LanguageContextType>(
@@ -54,7 +56,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const setLanguage = (newLang: Language) => {
     setLang(newLang);
     const params = new URLSearchParams(searchParams);
-    newLang === "he" ? params.delete("lang") : params.set("lang", newLang);
+    if (newLang === "he") params.delete("lang");
+    else params.set("lang", newLang);
     router.push(`?${params.toString()}`);
   };
 

@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
-import { db } from "~/server/db";
-import { courses } from "~/server/db";
 import { SearchParams } from "next/dist/server/request/search-params";
 import { getLang } from "~/utils/language";
 import CourseCarousel from "./_components/CourseCarousel";
 import { tryCatch } from "~/utils/tryCatch";
 import { expressAPI } from "~/server/express";
+import { InferSelectModel } from "drizzle-orm";
+import { courses } from "~/server/db";
 
 interface CourseProps {
   params: {
@@ -17,14 +16,14 @@ interface CourseProps {
 
 const CoursePage = async ({ params, searchParams }: CourseProps) => {
   const { translation } = await getLang(searchParams);
-  const pageParams = await params;
+  const pageParams = params;
 
   const courseIdNum = parseInt(pageParams.courseId, 10);
   if (isNaN(courseIdNum)) notFound();
 
-  const [success, result] = await tryCatch(
+  const [success, result] = (await tryCatch(
     expressAPI.get(`/api/courses/${courseIdNum}`),
-  );
+  )) as [false, unknown] | [true, InferSelectModel<typeof courses>];
 
   if (!success) {
     console.error(result);
