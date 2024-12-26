@@ -13,9 +13,7 @@ jobs:
       run:
         working-directory: ./frontend
     env:
-      # Add all required environment variables here
       POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-      # Add any other required environment variables
 
     steps:
       - name: Check out repository
@@ -31,6 +29,9 @@ jobs:
           
       - name: Enable Corepack
         run: corepack enable
+
+      - name: Debug Environment Variables
+        run: echo $POSTGRES_URL
           
       - name: Install dependencies
         run: yarn install
@@ -50,6 +51,9 @@ jobs:
       run:
         working-directory: ./backend
 
+    env:
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -64,6 +68,9 @@ jobs:
           
       - name: Enable Corepack
         run: corepack enable
+
+      - name: Debug Environment Variables
+        run: echo $POSTGRES_URL
           
       - name: Install dependencies
         run: yarn install
