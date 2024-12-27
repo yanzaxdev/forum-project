@@ -16,7 +16,7 @@ interface CourseProps {
 
 const CoursePage = async ({ params, searchParams }: CourseProps) => {
   const { translation } = await getLang(searchParams);
-  const pageParams = params;
+  const pageParams = await params;
 
   const courseIdNum = parseInt(pageParams.courseId, 10);
   if (isNaN(courseIdNum)) notFound();

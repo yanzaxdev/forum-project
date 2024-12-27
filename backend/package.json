@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "deploy": "npm run build && npm start",
-    "dev": "nodemon --exec ts-node -r tsconfig-paths/register api/index.ts",
+    "dev": "nodemon",
     "d:generate-schema": "npx drizzle-kit introspect --config src/db/config/drizzle.ts",
     "d:migrate": "npx drizzle-kit migrate --config src/db/config/drizzle.ts",
     "d:rollback": "npx drizzle-kit rollback --config src/db/config/drizzle.ts",
