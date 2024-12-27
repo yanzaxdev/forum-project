@@ -1,8 +1,10 @@
-import {sql} from 'drizzle-orm';
+import {InferInsertModel, InferSelectModel, sql} from 'drizzle-orm';
 import {index, integer, timestamp, varchar,} from 'drizzle-orm/pg-core';
 
 import {createTable} from './tableCreator';
 
+export type UserSelect = InferSelectModel<typeof users>;
+export type UserInsert = InferInsertModel<typeof users>;
 
 export const users = createTable(
     'users', {

@@ -1,11 +1,12 @@
-import {sql} from 'drizzle-orm';
+import {InferInsertModel, InferSelectModel, sql} from 'drizzle-orm';
 import {decimal, index, integer, timestamp, unique,} from 'drizzle-orm/pg-core';
 
 import {courses} from './courses';
 import {createTable} from './tableCreator';
 import {users} from './users';
 
-
+export type CourseRankingSelect = InferSelectModel<typeof courseRankings>;
+export type CourseRankingInsert = InferInsertModel<typeof courseRankings>;
 
 export const courseRankings = createTable(
     'course_rankings', {

@@ -47,6 +47,17 @@ export const xTrans = {
     leaveComment: 'Leave a Comment',
     addComment: 'Add Comment',
     outOf: 'Out of',
+    courseNumber: 'Course Number',
+    level: 'Level',
+    creditPoints: 'Credit Points',
+    department: 'Department',
+    gradeAverage: 'Grade Average',
+    examDifficulty: 'Exam Difficulty',
+    assignmentDifficulty: 'Assignment Difficulty',
+    interestLevel: 'Interest Level',
+    overallScore: 'Overall Score',
+    createdAt: 'Created At',
+    rankThis: 'Rank this'
   },
   he: {
     _self: 'עברית',
@@ -96,5 +107,17 @@ export const xTrans = {
     noComments: 'אין עדיין תגובות. היה הראשון לשתף את מחשבותיך!',
     leaveComment: 'השאר תגובה',
     addComment: 'הוסף תגובה',
+    courseNumber: 'מספר קורס',
+    level: 'רמה',
+    creditPoints: 'נקודות זכות',
+    department: 'מחלקה',
+    gradeAverage: 'ממוצע ציונים',
+    examDifficulty: 'קושי מבחן',
+    assignmentDifficulty: 'קושי מטלה',
+    interestLevel: 'רמת עניין',
+    overallScore: 'ציון כללי',
+    createdAt: 'נוצר ב',
+    rankThis: 'דרג'
+
   },
 };

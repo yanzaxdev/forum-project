@@ -16,7 +16,7 @@ type Language = "en" | "he";
 interface LanguageContextType {
   lang: Language;
   isHeb: boolean;
-  t: typeof xTrans.en | typeof xTrans.he;
+  translation: typeof xTrans.en | typeof xTrans.he;
   langParam: string;
   setLanguage: (lang: Language) => void;
 }
@@ -24,7 +24,7 @@ interface LanguageContextType {
 const defaultLanguageContext: LanguageContextType = {
   lang: "en",
   isHeb: false,
-  t: xTrans.en,
+  translation: xTrans.en,
   langParam: "",
   setLanguage: () => {
     throw new Error("setLanguage not implemented");
@@ -66,7 +66,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const contextValue: LanguageContextType = {
     lang,
     isHeb: lang === "he",
-    t: lang === "he" ? xTrans.he : xTrans.en,
+    translation: lang === "he" ? xTrans.he : xTrans.en,
     langParam: lang === "he" ? "" : "?lang=en",
     setLanguage,
   };
