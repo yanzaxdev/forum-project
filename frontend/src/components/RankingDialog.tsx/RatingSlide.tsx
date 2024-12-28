@@ -37,10 +37,12 @@ export function RatingSlide({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-4">
+    <div className="flex w-full flex-col items-center space-y-4 p-4">
       <h3 className="text-lg font-semibold">{title}</h3>
       {description && (
-        <p className="text-muted-foreground text-sm">{description}</p>
+        <p className="text-muted-foreground text-center text-sm">
+          {description}
+        </p>
       )}
 
       <StarRating rating={value} onChange={handleRatingChange} size="lg" />

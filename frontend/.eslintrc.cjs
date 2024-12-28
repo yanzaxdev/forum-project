@@ -32,8 +32,8 @@ const config = {
 
   },
   ignorePatterns : [
-    "node_modules/", "dist/",
-    "./src/components/ui/**",  // Ignore linting for components/ui directory
+    "node_modules/",
+    "dist/",
   ],
 };
 module.exports = config;

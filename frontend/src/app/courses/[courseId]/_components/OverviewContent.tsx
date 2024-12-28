@@ -4,7 +4,7 @@ import { Course } from "$/schema";
 import { FC, useState } from "react";
 import { useLanguage } from "~/app/providers";
 import { RankingDialog } from "~/components/RankingDialog.tsx";
-import { CarouselItem } from "~/components/ui/carousel";
+import { CarouselItem } from "~/components/ui/course_carousel";
 import { cn } from "~/lib/utils";
 
 interface Props {
