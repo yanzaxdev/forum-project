@@ -2,7 +2,7 @@
 
 import { type FC } from "react";
 import { useLanguage } from "~/app/providers";
-import { Carousel } from "~/components/ui/_carousel";
+import { Carousel } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import { useTabs } from "../useTabs";
 import CourseCarouselNav from "./CourseCarouselNav";

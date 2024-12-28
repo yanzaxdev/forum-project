@@ -4,7 +4,7 @@ import { Course } from "$/schema";
 import { FC, useState } from "react";
 import { useLanguage } from "~/app/providers";
 import { RankingDialog } from "~/components/RankingDialog.tsx";
-import { CarouselItem } from "~/components/ui/_carousel";
+import { CarouselItem } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 
 interface Props {
@@ -87,13 +87,6 @@ const OverviewContent: FC<Props> = ({ course }) => {
         isOpen={isRankingOpen}
         onClose={() => setIsRankingOpen(false)}
         onComplete={handleRankingComplete}
-        initialRankings={{
-          assignmentDifficulty: 0,
-          examDifficulty: 0,
-          interestLevel: 0,
-          overallScore: 0,
-        }}
-        isHeb={isHeb}
       />
     </CarouselItem>
   );

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CarouselContent, CarouselItem } from "~/components/ui/_carousel";
+import { CarouselContent, CarouselItem } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import {
   Book,

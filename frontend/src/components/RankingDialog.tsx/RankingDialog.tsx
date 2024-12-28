@@ -16,7 +16,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from "~/components/ui/_carousel";
+} from "~/components/ui/carousel";
 import { useLanguage } from "~/app/providers";
 
 // Reuse your StarRating & RatingSlide
