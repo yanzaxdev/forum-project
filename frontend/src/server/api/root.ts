@@ -2,6 +2,7 @@ import {createCallerFactory, createTRPCRouter} from '~/server/api/trpc';
 
 import {coursesRouter} from './routers/courses';
 
+
 /**
  * This is the primary router for your server.
  *
