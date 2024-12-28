@@ -8,13 +8,13 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
-import { CourseSelect } from "~/server/db/schema/courses";
 import OverviewCarousel from "./OverviewCarousel";
+import { Course } from "$/schema";
 
 interface CourseCarouselContentProps {
   onContentClick?: () => void;
   className?: string;
-  course: CourseSelect;
+  course: Course;
 }
 
 const CourseCarouselContent: FC<CourseCarouselContentProps> = ({

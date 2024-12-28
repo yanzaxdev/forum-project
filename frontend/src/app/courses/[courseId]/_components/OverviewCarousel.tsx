@@ -1,12 +1,12 @@
 "use client";
 
+import { Course } from "$/schema";
 import { FC } from "react";
 import { useLanguage } from "~/app/providers";
 import { CarouselItem } from "~/components/ui/carousel";
-import { CourseSelect } from "~/server/db/schema/courses";
 
 interface Props {
-  course: CourseSelect;
+  course: Course;
 }
 
 const OverviewCarousel: FC<Props> = ({ course }) => {

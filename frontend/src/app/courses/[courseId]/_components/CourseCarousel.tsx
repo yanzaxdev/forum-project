@@ -7,10 +7,10 @@ import { cn } from "~/lib/utils";
 import { useTabs } from "../useTabs";
 import CourseCarouselNav from "./CourseCarouselNav";
 import CourseCarouselContent, { DEFAULT_TABS } from "./CourseCarouselContent";
-import { CourseSelect } from "~/server/db/schema/courses";
+import { Course } from "$/schema";
 
 export interface TabbedContentProps {
-  course: CourseSelect;
+  course: Course;
   className?: string;
 }
 
