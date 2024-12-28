@@ -41,6 +41,7 @@
     "../types/schema.ts"
   ],
    "exclude": [
+    "./src/components/ui/**",
     ".next",
     "node_modules",
     ".eslintrc.cjs",

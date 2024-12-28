@@ -29,6 +29,11 @@ const config = {
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ],
     "drizzle/enforce-update-with-where" :
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ]
-  }
+
+  },
+  ignorePatterns : [
+    "node_modules/", "dist/",
+    "./src/components/ui/**",  // Ignore linting for components/ui directory
+  ],
 };
 module.exports = config;
