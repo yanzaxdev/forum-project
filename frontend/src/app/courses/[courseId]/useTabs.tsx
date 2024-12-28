@@ -1,6 +1,6 @@
 // useTabs.ts
 import { useCallback, useEffect, useState } from "react";
-import { type CarouselApi } from "~/components/ui/_carousel";
+import { type CarouselApi } from "~/components/ui/carousel";
 import { TabItem } from "./_components/CourseCarouselContent";
 
 export function useTabs(tabs: TabItem[]) {
@@ -56,7 +56,6 @@ export function useTabs(tabs: TabItem[]) {
   const handleTabClick = useCallback(
     (index: number) => {
       if (!api) return;
-      console.log({ index });
 
       const distance = Math.abs(index - activeTab);
       if (distance > 1) {
