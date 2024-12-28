@@ -1,8 +1,10 @@
-import {sql} from 'drizzle-orm';
-import {index, integer, timestamp, varchar,} from 'drizzle-orm/pg-core';
+import {InferSelectModel, sql} from 'drizzle-orm';
+import {index, integer, timestamp, varchar} from 'drizzle-orm/pg-core';
 
 import {createTable} from './tableCreator';
 
+export type User = InferSelectModel<typeof users>;
+export type UserInsert = Omit<User, 'id'>;
 
 export const users = createTable(
     'users', {
@@ -13,7 +15,7 @@ export const users = createTable(
                      .default(sql`CURRENT_TIMESTAMP`)
                      .notNull(),
     },
-    (user) => ({
-      usernameIndex: index('username_idx').on(user.username),
-      emailIndex: index('email_idx').on(user.email),
-    }));
+    (user) => [  // Changed from object to array
+        index('username_idx').on(user.username),
+        index('email_idx').on(user.email),
+]);

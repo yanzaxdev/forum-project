@@ -1,11 +1,12 @@
-import {sql} from 'drizzle-orm';
-import {decimal, index, integer, timestamp, unique,} from 'drizzle-orm/pg-core';
+import {InferSelectModel, sql} from 'drizzle-orm';
+import {decimal, index, integer, timestamp, unique} from 'drizzle-orm/pg-core';
 
 import {courses} from './courses';
 import {createTable} from './tableCreator';
 import {users} from './users';
 
-
+export type CourseRanking = InferSelectModel<typeof courseRankings>;
+export type CourseRankingInsert = Omit<CourseRanking, 'id'>;
 
 export const courseRankings = createTable(
     'course_rankings', {
@@ -23,11 +24,9 @@ export const courseRankings = createTable(
       createdAt: timestamp('created_at', {withTimezone: true})
                      .default(sql`CURRENT_TIMESTAMP`)
                      .notNull(),
-
     },
-    (ranking) => ({
-      courseIdIndex: index('course_id_idx').on(ranking.courseId),
-      userIdIndex: index('user_id_idx').on(ranking.userId),
-      uniqueCourseUserRanking: unique('unique_course_user_ranking')
-                                   .on(ranking.userId, ranking.courseId)
-    }));
+    (ranking) => [  // Changed from object to array
+        index('course_id_idx').on(ranking.courseId),
+        index('user_id_idx').on(ranking.userId),
+        unique('unique_course_user_ranking')
+            .on(ranking.userId, ranking.courseId)]);

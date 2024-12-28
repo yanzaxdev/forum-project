@@ -20,6 +20,8 @@ module.exports = [
       'no-console' : ['error', {allow : ['warn', 'error']}],
                    ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/explicit-function-return-type' : 'warn',
+      '@typescript-eslint/no-explicit-any' : 'warn',
+      '@typescript-eslint/no-unsafe-assignment' : 'warn',
       '@typescript-eslint/no-unused-vars' :
                                           ['warn', {argsIgnorePattern : '^_'}],
     },

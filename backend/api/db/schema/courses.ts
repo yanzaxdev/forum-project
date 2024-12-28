@@ -1,8 +1,10 @@
-import {sql} from 'drizzle-orm';
-import {decimal, index, integer, text, timestamp, varchar,} from 'drizzle-orm/pg-core';
+import {InferSelectModel, sql} from 'drizzle-orm';
+import {decimal, index, integer, text, timestamp, varchar} from 'drizzle-orm/pg-core';
 
 import {createTable} from './tableCreator';
 
+export type Course = InferSelectModel<typeof courses>;
+export type CourseInsert = Omit<Course, 'id'>;
 
 export const courses = createTable(
     'courses', {
@@ -25,7 +27,6 @@ export const courses = createTable(
                         .default(sql`0`),
       department: varchar('department', {length: 256}),
 
-      // Corrected default values
       gradeAverage:
           decimal('grade_average', {precision: 5, scale: 2}).default(sql`0`),
       examDifficulty:
@@ -37,11 +38,10 @@ export const courses = createTable(
           decimal('interest_level', {precision: 3, scale: 2}).default(sql`0`),
       overallScore:
           decimal('overall_score', {precision: 5, scale: 2}).default(sql`0`),
-
     },
-    (course) => ({
-      titleIndexEn: index('course_title_en_idx').on(course.titleEn),
-      titleIndexHe: index('course_title_he_idx').on(course.titleHe),
-      courseNumberIndex: index('course_number_idx').on(course.courseNumber),
-      departmentIndex: index('course_department_idx').on(course.department),
-    }));
+    (course) => [  // Changed from object to array
+        index('course_title_en_idx').on(course.titleEn),
+        index('course_title_he_idx').on(course.titleHe),
+        index('course_number_idx').on(course.courseNumber),
+        index('course_department_idx').on(course.department),
+]);
