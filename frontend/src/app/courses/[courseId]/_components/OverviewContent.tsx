@@ -1,17 +1,19 @@
 "use client";
 
 import { Course } from "$/schema";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useLanguage } from "~/app/providers";
-import { CarouselItem } from "~/components/ui/carousel";
+import { RankingDialog } from "~/components/RankingDialog.tsx";
+import { CarouselItem } from "~/components/ui/_carousel";
+import { cn } from "~/lib/utils";
 
 interface Props {
   course: Course;
 }
 
-const OverviewCarousel: FC<Props> = ({ course }) => {
+const OverviewContent: FC<Props> = ({ course }) => {
   const { isHeb, translation } = useLanguage();
-
+  const [isRankingOpen, setIsRankingOpen] = useState(false);
   /* ----- State -----*/
   const {
     titleEn,
@@ -29,11 +31,19 @@ const OverviewCarousel: FC<Props> = ({ course }) => {
     overallScore,
   } = course;
 
+  const handleRankingComplete = () => {
+    setIsRankingOpen(false);
+  };
+
   /* ----- Return -----*/
   return (
     <CarouselItem className="relative h-full w-full rounded-lg bg-white p-6 dark:bg-gray-800">
       <button
-        className={`absolute top-4 ${isHeb ? "left-4" : "right-4"} rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md hover:bg-blue-600`}
+        onClick={() => setIsRankingOpen(true)}
+        className={cn(
+          "absolute top-4 mx-4 rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md hover:bg-blue-600",
+          isHeb ? "left-4" : "right-4",
+        )}
       >
         {translation.rankThis}
       </button>
@@ -73,8 +83,20 @@ const OverviewCarousel: FC<Props> = ({ course }) => {
           <strong>{translation.overallScore}:</strong> {overallScore}
         </p>
       </div>
+      <RankingDialog
+        isOpen={isRankingOpen}
+        onClose={() => setIsRankingOpen(false)}
+        onComplete={handleRankingComplete}
+        initialRankings={{
+          assignmentDifficulty: 0,
+          examDifficulty: 0,
+          interestLevel: 0,
+          overallScore: 0,
+        }}
+        isHeb={isHeb}
+      />
     </CarouselItem>
   );
 };
 
-export default OverviewCarousel;
+export default OverviewContent;

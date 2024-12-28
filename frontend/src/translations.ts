@@ -57,7 +57,8 @@ export const xTrans = {
     interestLevel: 'Interest Level',
     overallScore: 'Overall Score',
     createdAt: 'Created At',
-    rankThis: 'Rank this'
+    rankThis: 'Rank this',
+    completeRanking: 'Complete Ranking',
   },
   he: {
     _self: 'עברית',
@@ -117,7 +118,8 @@ export const xTrans = {
     interestLevel: 'רמת עניין',
     overallScore: 'ציון כללי',
     createdAt: 'נוצר ב',
-    rankThis: 'דרג'
+    rankThis: 'דרג',
+    completeRanking: 'השלם דירוג',
 
   },
 };

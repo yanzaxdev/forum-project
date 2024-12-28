@@ -20,7 +20,9 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
         "flex flex-col items-center justify-center",
       )}
     >
-      <h1 className="mb-4 text-4xl font-bold">{translation.welcomeMessage}</h1>
+      <h1 className="mb-4 text-center text-4xl font-bold">
+        {translation.welcomeMessage}
+      </h1>
 
       <p className="mb-6 max-w-md text-center text-lg">
         {translation.welcomeDescription}

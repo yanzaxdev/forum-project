@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CarouselContent, CarouselItem } from "~/components/ui/carousel";
+import { CarouselContent, CarouselItem } from "~/components/ui/_carousel";
 import { cn } from "~/lib/utils";
 import {
   Book,
@@ -8,7 +8,7 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
-import OverviewCarousel from "./OverviewCarousel";
+import OverviewContent from "./OverviewContent";
 import { Course } from "$/schema";
 
 interface CourseCarouselContentProps {
@@ -25,7 +25,7 @@ const CourseCarouselContent: FC<CourseCarouselContentProps> = ({
     <CarouselContent className={cn("h-full flex-1 cursor-pointer", className)}>
       {DEFAULT_TABS.map((tab) => {
         if (tab.id === "overview")
-          return <OverviewCarousel key={tab.id} course={course} />;
+          return <OverviewContent key={tab.id} course={course} />;
         else if (tab.id === "forum") return <CarouselItem key={"forum"} />;
         else if (tab.id === "reviews") return <CarouselItem key={"reviews"} />;
         else if (tab.id === "tutors") return <CarouselItem key={"tutors"} />;
