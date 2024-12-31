@@ -16,6 +16,8 @@ import { useLanguage } from "~/app/providers";
 import { RatingCategories, RatingSlide } from "./RatingSlide";
 import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
+import { expressAPI } from "~/server/express";
+import { useMutation } from "@tanstack/react-query";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -35,6 +37,19 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+
+  const submitRating = useMutation({
+    mutationFn: async (data: RankingContextType) => {
+      const response = await expressAPI.post("/api/rating", data);
+      return response;
+    },
+    onSuccess: () => {
+      onClose();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
 
   useEffect(() => {
     if (!api) return;
@@ -62,10 +77,11 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     else moveLeft();
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!isValid(rankingContext)) {
       alert("Please fill in all fields");
     }
+    submitRating.mutate(rankingContext);
   };
 
   // Calculate button states based on RTL
@@ -74,11 +90,8 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
   const rankingContext: RankingContextType = {
     examDifficulty: 0,
-    examComment: "",
     assignmentDifficulty: 0,
-    assignmentComment: "",
     interestLevel: 0,
-    interestComment: "",
     overallScore: 0,
     overallComment: "",
   };
@@ -142,21 +155,15 @@ export default RatingDialog;
 
 export interface RankingContextType {
   examDifficulty: number;
-  examComment: string;
   assignmentDifficulty: number;
-  assignmentComment: string;
   interestLevel: number;
-  interestComment: string;
   overallScore: number;
   overallComment: string;
 }
 export const RankingContext = React.createContext<RankingContextType>({
   examDifficulty: 0,
-  examComment: "",
   assignmentDifficulty: 0,
-  assignmentComment: "",
   interestLevel: 0,
-  interestComment: "",
   overallScore: 0,
   overallComment: "",
 });
