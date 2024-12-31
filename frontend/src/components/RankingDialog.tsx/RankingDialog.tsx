@@ -12,7 +12,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-import { Button } from "~/components/ui/button";
 import { TranslationKeys } from "~/translations";
 import { useLanguage } from "~/app/providers";
 import { RatingSlide } from "./RatingSlide";
@@ -39,25 +38,18 @@ const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (!api) return;
-
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
-
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
 
   const moveRight = () => {
-    if (api) {
-      api.scrollNext();
-    }
+    if (api) api.scrollNext();
   };
-
   const moveLeft = () => {
-    if (api) {
-      api.scrollPrev();
-    }
+    if (api) api.scrollPrev();
   };
 
   const handleNext = () => {
