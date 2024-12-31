@@ -59,6 +59,7 @@ export const xTrans = {
     createdAt: 'Created At',
     rankThis: 'Rank this',
     completeRanking: 'Complete Ranking',
+    grade: 'Grade',
   },
   he: {
     _self: 'עברית',
@@ -120,6 +121,7 @@ export const xTrans = {
     createdAt: 'נוצר ב',
     rankThis: 'דרג',
     completeRanking: 'השלם דירוג',
+    grade: 'ציון',
 
   },
 };

@@ -1,81 +1,34 @@
-"use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogFooter,
 } from "~/components/ui/dialog";
-import { Button } from "~/components/ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "~/components/ui/carousel";
+import { Button } from "~/components/ui/button";
+import { Star } from "lucide-react";
+import { xTrans } from "~/translations";
 import { useLanguage } from "~/app/providers";
 
-// Reuse your StarRating & RatingSlide
-import { RatingSlide } from "./RatingSlide";
-
-interface RatingCategory {
-  name: string;
-  title: string;
-  description?: string;
-  hasTextInput?: boolean;
-  requiredComment?: boolean;
-}
-
-const categories: RatingCategory[] = [
-  { name: "gradeAverage", title: "Grade Average" },
-  { name: "examDifficulty", title: "Exam Difficulty" },
-  { name: "assignmentDifficulty", title: "Assignment Difficulty" },
-  { name: "interestLevel", title: "Interest Level" },
-  {
-    name: "overallScore",
-    title: "Overall Score",
-    description: "Summarize your overall impression",
-    hasTextInput: true,
-    requiredComment: true, // let’s say we want the final comment to be required
-  },
-];
-
-interface RateCourseDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onComplete: (
-    allRatings: Record<string, number>,
-    comments: Record<string, string>,
-  ) => void;
-}
-
-export function RankingDialog({
-  isOpen,
-  onClose,
-  onComplete,
-}: RateCourseDialogProps) {
+type TransKeys = keyof typeof xTrans.en;
+const RankingDialog = ({ isOpen, onClose }) => {
   const { translation } = useLanguage();
+  const categories: { name: TransKeys }[] = [
+    { name: "overallScore" },
+    { name: "examDifficulty" },
+    { name: "assignmentDifficulty" },
+    { name: "interestLevel" },
+  ];
 
-  // Store each category’s numeric rating
-  const [ratings, setRatings] = useState<Record<string, number>>({});
-
-  // Store each category’s text comment
-  const [comments, setComments] = useState<Record<string, string>>({});
-
-  // Current index in the carousel
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleRatingChange = (categoryName: string, value: number) => {
-    setRatings((prev) => ({ ...prev, [categoryName]: value }));
-  };
-
-  const handleCommentChange = (categoryName: string, text: string) => {
-    setComments((prev) => ({ ...prev, [categoryName]: text }));
-  };
 
   const handleNext = () => {
     if (currentIndex < categories.length - 1) {
@@ -89,96 +42,56 @@ export function RankingDialog({
     }
   };
 
-  const handleComplete = () => {
-    // For the final category, if requiredComment is set, ensure user wrote something
-    const finalCategory = categories[currentIndex];
-    if (
-      finalCategory &&
-      finalCategory.requiredComment &&
-      !comments[finalCategory.name]?.trim()
-    ) {
-      // Could show an error toast or something
-      alert("Please add a comment for the overall score!");
-      return;
-    }
-
-    // Submit everything
-    onComplete(ratings, comments);
-  };
-
-  const handleReviewInDetail = () => {
-    // Could close dialog & navigate to a separate “detailed review” page
-    onClose();
-    // e.g., router.push("/courses/[courseId]/review?type=detailed")
-  };
-
-  const handleRateMoreCourses = () => {
-    // Could close dialog & navigate to a rating page with a full list of courses
-    onClose();
-    // e.g., router.push("/courses/rating-hub")
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="flex h-[500px] min-w-[80vh] flex-col sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{translation.rankThis}</DialogTitle>
-          <DialogDescription>Rate each category</DialogDescription>
+          <DialogTitle className="text-center">{}</DialogTitle>
         </DialogHeader>
 
-        <Carousel className="w-full">
-          <CarouselContent>
-            {categories.map((category, idx) => (
-              <CarouselItem key={category.name}>
-                {/** Use your existing <RatingSlide> or new custom */}
-                <RatingSlide
-                  title={category.title}
-                  description={category.description}
-                  value={ratings[category.name] ?? 0}
-                  onChange={(val) => {
-                    handleRatingChange(category.name, val);
-                    // If not the final slide or if comment not required, auto-advance
-                    if (
-                      !category.requiredComment &&
-                      idx < categories.length - 1
-                    ) {
-                      setTimeout(() => handleNext(), 500);
-                    }
-                  }}
-                  hasTextInput={category.hasTextInput}
-                  onTextChange={(txt) =>
-                    handleCommentChange(category.name, txt)
-                  }
-                  onNext={handleNext}
-                  isLast={idx === categories.length - 1}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+        <div className="flex flex-1 items-center justify-center py-6">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {categories.map((category) => (
+                <CarouselItem
+                  key={category.name}
+                  className="flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center justify-center gap-6">
+                    <h2 className="text-center text-lg font-medium">
+                      {translation[category.name]}
+                    </h2>
+                    <div className="flex items-center justify-center">
+                      <div className="inline-flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Star key={i} className="h-12 w-12 text-yellow-400" />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-          <CarouselPrevious onClick={handlePrevious} />
-          <CarouselNext onClick={handleNext} />
-        </Carousel>
+            <CarouselPrevious onClick={handlePrevious} />
+            <CarouselNext onClick={handleNext} />
+          </Carousel>
+        </div>
 
         <DialogFooter className="flex flex-col gap-2">
-          {/** Final “Complete” button. But we can also put 2 other actions: “Review in Detail” or “Rate More…” */}
           {currentIndex === categories.length - 1 ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button variant="default" onClick={handleComplete}>
-                {translation.completeRanking}
-              </Button>
-              <Button variant="outline" onClick={handleReviewInDetail}>
-                Review in Detail
-              </Button>
-              <Button variant="outline" onClick={handleRateMoreCourses}>
-                Rate More Courses
-              </Button>
+              <Button variant="default">{translation.completeRanking}</Button>
+              <Button variant="outline">Review in Detail</Button>
+              <Button variant="outline">Rate More Courses</Button>
             </div>
           ) : (
-            <Button onClick={handleNext}>{translation.next}</Button>
+            <></>
           )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default RankingDialog;
