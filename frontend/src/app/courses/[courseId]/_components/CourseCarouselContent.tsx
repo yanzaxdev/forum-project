@@ -23,14 +23,10 @@ const CourseCarouselContent: FC<CourseCarouselContentProps> = ({
 }) => {
   return (
     <CarouselContent className={cn("h-full flex-1 cursor-pointer", className)}>
-      {DEFAULT_TABS.map((tab) => {
-        if (tab.id === "overview")
-          return <OverviewContent key={tab.id} course={course} />;
-        else if (tab.id === "forum") return <CarouselItem key={"forum"} />;
-        else if (tab.id === "reviews") return <CarouselItem key={"reviews"} />;
-        else if (tab.id === "tutors") return <CarouselItem key={"tutors"} />;
-        return <></>;
-      })}
+      <OverviewContent course={course} />;
+      <CarouselItem key={"forum"} />;
+      <CarouselItem key={"reviews"} />;
+      <CarouselItem key={"tutors"} />;
     </CarouselContent>
   );
 };
@@ -66,3 +62,10 @@ export const DEFAULT_TABS: TabItem[] = [
     icon: Users,
   },
 ];
+
+export enum TabID {
+  OVERVIEW = "overview",
+  REVIEWS = "reviews",
+  FORUM = "forum",
+  TUTORS = "tutors",
+}

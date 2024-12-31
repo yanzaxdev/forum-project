@@ -11,7 +11,7 @@ import { SheetTrigger } from "./ui/sheet";
 
 const NavBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isRTL: isHeb, translation: t, langParam } = useLanguage();
+  const { isRTL, translation: t, langParam } = useLanguage();
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
