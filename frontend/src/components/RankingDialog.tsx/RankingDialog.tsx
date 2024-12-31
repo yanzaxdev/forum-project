@@ -66,42 +66,80 @@ const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
+  const rankingContext: RankingContextType = {
+    examDifficulty: 0,
+    examComment: "",
+    assignmentDifficulty: 0,
+    assignmentComment: "",
+    interestLevel: 0,
+    interestComment: "",
+    overallScore: 0,
+    overallComment: "",
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="flex h-[500px] min-w-[80vh] flex-col sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle className="text-center">{}</DialogTitle>
-        </DialogHeader>
+    <RankingContext.Provider value={rankingContext}>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="flex h-[500px] min-w-[80vh] flex-col sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-center">{}</DialogTitle>
+          </DialogHeader>
 
-        <Carousel
-          opts={{
-            direction: isRTL ? "rtl" : "ltr",
-          }}
-          setApi={setApi}
-          className="flex w-full flex-1 items-center justify-center py-6"
-        >
-          <CarouselContent className={`${isRTL ? "flex-row-reverse" : ""}`}>
-            {CATEGORIES.map((category) => (
-              <RatingSlide api={api} key={category.name} name={category.name} />
-            ))}
-          </CarouselContent>
+          <Carousel
+            opts={{
+              direction: isRTL ? "rtl" : "ltr",
+            }}
+            setApi={setApi}
+            className="flex w-full flex-1 items-center justify-center py-6"
+          >
+            <CarouselContent className={`${isRTL ? "flex-row-reverse" : ""}`}>
+              {CATEGORIES.map((category) => (
+                <RatingSlide
+                  api={api}
+                  key={category.name}
+                  name={category.name}
+                />
+              ))}
+            </CarouselContent>
 
-          <CarouselPrevious
-            onClick={handlePrevious}
-            disabled={isAtStart}
-            className={`${isAtStart ? "hidden" : ""}`}
-          />
-          <CarouselNext
-            onClick={handleNext}
-            disabled={isAtEnd}
-            className={`${isAtEnd ? "hidden" : ""}`}
-          />
-        </Carousel>
+            <CarouselPrevious
+              onClick={handlePrevious}
+              disabled={isAtStart}
+              className={`${isAtStart ? "hidden" : ""}`}
+            />
+            <CarouselNext
+              onClick={handleNext}
+              disabled={isAtEnd}
+              className={`${isAtEnd ? "hidden" : ""}`}
+            />
+          </Carousel>
 
-        <DialogFooter className="absolute bottom-0 pb-2"></DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter className="absolute bottom-0 pb-2"></DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </RankingContext.Provider>
   );
 };
 
 export default RankingDialog;
+
+export interface RankingContextType {
+  examDifficulty: number;
+  examComment: string;
+  assignmentDifficulty: number;
+  assignmentComment: string;
+  interestLevel: number;
+  interestComment: string;
+  overallScore: number;
+  overallComment: string;
+}
+export const RankingContext = React.createContext<RankingContextType>({
+  examDifficulty: 0,
+  examComment: "",
+  assignmentDifficulty: 0,
+  assignmentComment: "",
+  interestLevel: 0,
+  interestComment: "",
+  overallScore: 0,
+  overallComment: "",
+});
