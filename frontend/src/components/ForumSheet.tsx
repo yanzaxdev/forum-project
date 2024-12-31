@@ -16,7 +16,12 @@ interface ForumSheetProps {
 
 const ForumSheet: FC<ForumSheetProps> = () => {
   const router = useRouter();
-  const { isHeb, setLanguage, translation: t, langParam } = useLanguage();
+  const {
+    isRTL: isHeb,
+    setLanguage,
+    translation: t,
+    langParam,
+  } = useLanguage();
 
   const handleLanguageToggle = () => {
     const newLang = isHeb ? "en" : "he";

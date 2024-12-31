@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,34 +16,63 @@ import { Button } from "~/components/ui/button";
 import { TranslationKeys } from "~/translations";
 import { useLanguage } from "~/app/providers";
 import { RatingSlide } from "./RatingSlide";
+import { CarouselApi } from "../ui/course_carousel";
 
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete?: () => void;
 }
-const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
-  const { translation } = useLanguage();
-  const categories: { name: TranslationKeys }[] = [
-    { name: "overallScore" },
-    { name: "examDifficulty" },
-    { name: "assignmentDifficulty" },
-    { name: "interestLevel" },
-  ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+const CATEGORIES: { name: TranslationKeys }[] = [
+  { name: "examDifficulty" },
+  { name: "assignmentDifficulty" },
+  { name: "interestLevel" },
+  { name: "overallScore" },
+];
+
+const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
+  const { isRTL } = useLanguage();
+  const [api, setApi] = React.useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap());
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const moveRight = () => {
+    if (api) {
+      api.scrollNext();
+    }
+  };
+
+  const moveLeft = () => {
+    if (api) {
+      api.scrollPrev();
+    }
+  };
 
   const handleNext = () => {
-    if (currentIndex < categories.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-    }
+    if (isRTL) moveLeft();
+    else moveRight();
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
+    if (isRTL) moveRight();
+    else moveLeft();
   };
+
+  // Calculate button states based on RTL
+  const isAtStart = isRTL ? current === count - 1 : current === 0;
+  const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -52,28 +81,32 @@ const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
           <DialogTitle className="text-center">{}</DialogTitle>
         </DialogHeader>
 
-        <Carousel className="flex w-full flex-1 items-center justify-center py-6">
-          <CarouselContent>
-            {categories.map((category) => (
-              <RatingSlide key={category.name} name={category.name} />
+        <Carousel
+          opts={{
+            direction: isRTL ? "rtl" : "ltr",
+          }}
+          setApi={setApi}
+          className="flex w-full flex-1 items-center justify-center py-6"
+        >
+          <CarouselContent className={`${isRTL ? "flex-row-reverse" : ""}`}>
+            {CATEGORIES.map((category) => (
+              <RatingSlide api={api} key={category.name} name={category.name} />
             ))}
           </CarouselContent>
 
-          <CarouselPrevious onClick={handlePrevious} />
-          <CarouselNext onClick={handleNext} />
+          <CarouselPrevious
+            onClick={handlePrevious}
+            disabled={isAtStart}
+            className={`${isAtStart ? "hidden" : ""}`}
+          />
+          <CarouselNext
+            onClick={handleNext}
+            disabled={isAtEnd}
+            className={`${isAtEnd ? "hidden" : ""}`}
+          />
         </Carousel>
 
-        <DialogFooter className="flex flex-col gap-2">
-          {currentIndex === categories.length - 1 ? (
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button variant="default">{translation.completeRanking}</Button>
-              <Button variant="outline">Review in Detail</Button>
-              <Button variant="outline">Rate More Courses</Button>
-            </div>
-          ) : (
-            <></>
-          )}
-        </DialogFooter>
+        <DialogFooter className="absolute bottom-0 pb-2"></DialogFooter>
       </DialogContent>
     </Dialog>
   );

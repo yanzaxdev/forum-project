@@ -12,7 +12,7 @@ interface Props {
 }
 
 const OverviewContent: FC<Props> = ({ course }) => {
-  const { isHeb, translation } = useLanguage();
+  const { isRTL: isHeb, translation } = useLanguage();
   const [isRankingOpen, setIsRankingOpen] = useState(false);
   /* ----- State -----*/
   const {

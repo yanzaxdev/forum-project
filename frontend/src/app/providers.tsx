@@ -15,7 +15,7 @@ type Language = "en" | "he";
 
 interface LanguageContextType {
   lang: Language;
-  isHeb: boolean;
+  isRTL: boolean;
   translation: typeof xTrans.en | typeof xTrans.he;
   langParam: string;
   setLanguage: (lang: Language) => void;
@@ -23,7 +23,7 @@ interface LanguageContextType {
 
 const defaultLanguageContext: LanguageContextType = {
   lang: "en",
-  isHeb: false,
+  isRTL: false,
   translation: xTrans.en,
   langParam: "",
   setLanguage: () => {
@@ -65,7 +65,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 
   const contextValue: LanguageContextType = {
     lang,
-    isHeb: lang === "he",
+    isRTL: lang === "he",
     translation: lang === "he" ? xTrans.he : xTrans.en,
     langParam: lang === "he" ? "" : "?lang=en",
     setLanguage,

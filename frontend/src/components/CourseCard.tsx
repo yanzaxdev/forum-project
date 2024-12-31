@@ -14,7 +14,7 @@ interface CourseCardProps {
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const router = useRouter();
-  const { lang, isHeb, langParam } = useLanguage();
+  const { lang, isRTL: isHeb, langParam } = useLanguage();
 
   const title = lang === "en" ? course.titleEn : course.titleHe;
   const description =

@@ -4,9 +4,11 @@ import { CarouselItem } from "../ui/course_carousel";
 import { useLanguage } from "~/app/providers";
 import { TranslationKeys } from "~/translations";
 import { Star } from "lucide-react";
+import { CarouselApi } from "~/components/ui/carousel";
 
 interface RatingSlideProps {
   name: TranslationKeys;
+  api: CarouselApi;
 }
 
 export function RatingSlide({ name }: RatingSlideProps) {

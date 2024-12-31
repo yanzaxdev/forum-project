@@ -15,7 +15,7 @@ export interface TabbedContentProps {
 }
 
 const CourseCarousel: FC<TabbedContentProps> = ({ className, course }) => {
-  const { isHeb } = useLanguage();
+  const { isRTL: isHeb } = useLanguage();
   const { activeTab, setApi, skipAnimation, handleTabClick, api } =
     useTabs(DEFAULT_TABS);
 
