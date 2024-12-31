@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,19 +9,22 @@ import {
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
 import { Button } from "~/components/ui/button";
-import { Star } from "lucide-react";
-import { xTrans } from "~/translations";
+import { TranslationKeys } from "~/translations";
 import { useLanguage } from "~/app/providers";
+import { RatingSlide } from "./RatingSlide";
 
-type TransKeys = keyof typeof xTrans.en;
-const RankingDialog = ({ isOpen, onClose }) => {
+interface RankingDialogProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onComplete?: () => void;
+}
+const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const { translation } = useLanguage();
-  const categories: { name: TransKeys }[] = [
+  const categories: { name: TranslationKeys }[] = [
     { name: "overallScore" },
     { name: "examDifficulty" },
     { name: "assignmentDifficulty" },
@@ -49,34 +52,16 @@ const RankingDialog = ({ isOpen, onClose }) => {
           <DialogTitle className="text-center">{}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-1 items-center justify-center py-6">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {categories.map((category) => (
-                <CarouselItem
-                  key={category.name}
-                  className="flex items-center justify-center"
-                >
-                  <div className="flex flex-col items-center justify-center gap-6">
-                    <h2 className="text-center text-lg font-medium">
-                      {translation[category.name]}
-                    </h2>
-                    <div className="flex items-center justify-center">
-                      <div className="inline-flex items-center gap-2">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <Star key={i} className="h-12 w-12 text-yellow-400" />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
+        <Carousel className="flex w-full flex-1 items-center justify-center py-6">
+          <CarouselContent>
+            {categories.map((category) => (
+              <RatingSlide key={category.name} name={category.name} />
+            ))}
+          </CarouselContent>
 
-            <CarouselPrevious onClick={handlePrevious} />
-            <CarouselNext onClick={handleNext} />
-          </Carousel>
-        </div>
+          <CarouselPrevious onClick={handlePrevious} />
+          <CarouselNext onClick={handleNext} />
+        </Carousel>
 
         <DialogFooter className="flex flex-col gap-2">
           {currentIndex === categories.length - 1 ? (

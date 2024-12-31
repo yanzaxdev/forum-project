@@ -1,79 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import StarRating from "./StarRating";
-import { Textarea } from "~/components/ui/textarea";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { CarouselItem } from "../ui/course_carousel";
+import { useLanguage } from "~/app/providers";
+import { TranslationKeys } from "~/translations";
+import { Star } from "lucide-react";
 
 interface RatingSlideProps {
-  title: string;
-  description?: string;
-  value: number;
-  onChange: (rating: number) => void;
-  onTextChange?: (text: string) => void;
-  hasTextInput?: boolean;
-  onNext?: () => void;
-  isLast?: boolean;
+  name: TranslationKeys;
 }
 
-export function RatingSlide({
-  title,
-  description,
-  value,
-  onChange,
-  onTextChange,
-  hasTextInput = false,
-  onNext,
-  isLast = false,
-}: RatingSlideProps) {
-  const [showTextInput, setShowTextInput] = useState(false);
-  const [text, setText] = useState("");
-
-  const handleRatingChange = (newRating: number) => {
-    onChange(newRating);
-    if (!isLast && onNext && !hasTextInput) {
-      setTimeout(onNext, 500);
-    }
-  };
+export function RatingSlide({ name }: RatingSlideProps) {
+  const { translation } = useLanguage();
 
   return (
-    <div className="flex flex-col items-center p-4">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      {description && (
-        <p className="text-muted-foreground text-center text-sm">
-          {description}
-        </p>
-      )}
-
-      <StarRating rating={value} onChange={handleRatingChange} size="lg" />
-
-      {hasTextInput && (
-        <div className="w-full space-y-2">
-          <button
-            onClick={() => setShowTextInput(!showTextInput)}
-            className="text-muted-foreground hover:text-foreground flex items-center text-sm"
-          >
-            {showTextInput ? (
-              <ChevronUp className="h-4 w-4" />
-            ) : (
-              <ChevronDown className="h-4 w-4" />
-            )}
-            <span className="ml-1">Add comment</span>
-          </button>
-
-          {showTextInput && (
-            <Textarea
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-                onTextChange?.(e.target.value);
-              }}
-              placeholder="Share your thoughts..."
-              className="min-h-[100px]"
-            />
-          )}
+    <CarouselItem key={name} className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center gap-6">
+        <h2 className="text-center text-lg font-medium">{translation[name]}</h2>
+        <div className="flex items-center justify-center">
+          <div className="inline-flex items-center gap-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Star key={i} className="h-12 w-12 text-yellow-400" />
+            ))}
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </CarouselItem>
   );
 }

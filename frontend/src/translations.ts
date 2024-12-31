@@ -1,3 +1,6 @@
+
+export type TranslationKeys = keyof typeof xTrans.en;
+
 export const xTrans = {
   en: {
     _self: 'English',
