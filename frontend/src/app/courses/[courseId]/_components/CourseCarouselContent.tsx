@@ -66,30 +66,3 @@ export const DEFAULT_TABS: TabItem[] = [
     icon: Users,
   },
 ];
-
-{
-  /* <CarouselItem key={tab.id}>
-  <article
-    className={cn(
-      "prose dark:prose-invert",
-      "flex h-full max-w-none flex-col",
-      "p-6",
-    )}
-  >
-    <h2
-      className={cn(
-        "mb-4 flex-none",
-        "text-2xl font-bold",
-        "text-gray-900 dark:text-white",
-      )}
-    >
-      {t[tab.id]}
-    </h2>
-    <div
-      className={cn("flex-1 overflow-auto", "text-gray-600 dark:text-gray-300")}
-    >
-      {t[tab.id]}
-    </div>
-  </article>
-</CarouselItem>; */
-}
