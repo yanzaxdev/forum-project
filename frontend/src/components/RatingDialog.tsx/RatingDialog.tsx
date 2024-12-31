@@ -30,7 +30,7 @@ const CATEGORIES: { name: TranslationKeys }[] = [
   { name: "overallScore" },
 ];
 
-const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
+const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const { isRTL } = useLanguage();
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -121,7 +121,7 @@ const RankingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default RankingDialog;
+export default RatingDialog;
 
 export interface RankingContextType {
   examDifficulty: number;

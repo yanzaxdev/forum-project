@@ -3,7 +3,7 @@
 import { Course } from "$/schema";
 import { FC, useState } from "react";
 import { useLanguage } from "~/app/providers";
-import RankingDialog from "~/components/RankingDialog.tsx/RankingDialog";
+import RatingDialog from "~/components/RatingDialog.tsx/RatingDialog";
 import { CarouselItem } from "~/components/ui/course_carousel";
 import { cn } from "~/lib/utils";
 
@@ -83,7 +83,7 @@ const OverviewContent: FC<Props> = ({ course }) => {
           <strong>{translation.overallScore}:</strong> {overallScore}
         </p>
       </div>
-      <RankingDialog
+      <RatingDialog
         isOpen={isRankingOpen}
         onClose={() => setIsRankingOpen(false)}
         onComplete={handleRankingComplete}
