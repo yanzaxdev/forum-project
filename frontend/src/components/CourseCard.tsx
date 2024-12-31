@@ -2,15 +2,14 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { InferSelectModel } from "drizzle-orm";
 import { cn } from "~/lib/utils";
 import { useLanguage } from "~/app/providers";
-import { courses } from "~/server/db/schema/courses";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Badge } from "./ui/badge";
+import { Course } from "$/schema";
 
 interface CourseCardProps {
-  course: InferSelectModel<typeof courses>;
+  course: Course;
 }
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {

@@ -1,9 +1,8 @@
-import { courses } from "~/server/db";
 import { getLang } from "../../utils/language";
 import { tryCatch } from "~/utils/tryCatch";
 import { expressAPI } from "~/server/express";
 import CourseCard from "../../components/CourseCard";
-import { InferSelectModel } from "drizzle-orm";
+import { Course } from "$/schema";
 
 interface CoursesPageProps {
   searchParams: {
@@ -24,7 +23,7 @@ const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
       </main>
     );
   }
-  const allCourses = result as InferSelectModel<typeof courses>[];
+  const allCourses = result as Course[];
 
   return (
     <main dir={translation._dir} className="mx-auto max-w-2xl px-4 py-8">

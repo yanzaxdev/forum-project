@@ -1,4 +1,4 @@
-import { InferSelectModel } from "drizzle-orm";
+import { Course } from "$/schema";
 import {
   Book,
   LucideIcon,
@@ -6,7 +6,6 @@ import {
   MessageSquare,
   Users,
 } from "lucide-react";
-import { courses } from "~/server/db";
 import { xTrans } from "~/translations";
 
 export interface TabItem {
@@ -16,7 +15,7 @@ export interface TabItem {
 }
 
 export interface TabbedContentProps {
-  course: InferSelectModel<typeof courses>;
+  course: Course;
   className?: string;
 }
 
