@@ -7,7 +7,6 @@ import { Star } from "lucide-react";
 import { CarouselApi } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import { RankingContext as RatingContext } from "./RatingDialog";
-import AccordionComment from "./AccordionComment";
 
 export type RatingCategories =
   | "examDifficulty"
@@ -25,7 +24,6 @@ export function RatingSlide({ name, api }: RatingSlideProps) {
   const [comment, setComment] = useState<string>("");
 
   const ctx = useContext(RatingContext);
-  console.log({ ctx });
 
   useEffect(() => {
     if (name === "assignmentDifficulty") {
@@ -64,20 +62,16 @@ export function RatingSlide({ name, api }: RatingSlideProps) {
           )}
           <div className="inline-flex items-center gap-2">
             {[1, 2, 3, 4, 5].map((starIndex) => (
-              <button
+              <Star
                 key={starIndex}
                 onClick={() => handleStarClick(starIndex)}
-                className="focus:outline-none"
-              >
-                <Star
-                  className={cn(
-                    "h-12 w-12 transition-all",
-                    starIndex <= rating
-                      ? "fill-yellow-400 font-bold text-yellow-400"
-                      : "text-yellow-400",
-                  )}
-                />
-              </button>
+                className={cn(
+                  "h-8 w-8 cursor-pointer transition-all hover:scale-110 md:h-10 md:w-10",
+                  starIndex <= rating
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-yellow-400 hover:fill-yellow-200",
+                )}
+              />
             ))}
           </div>
         </div>

@@ -15,6 +15,7 @@ import {
 import { useLanguage } from "~/app/providers";
 import { RatingCategories, RatingSlide } from "./RatingSlide";
 import { CarouselApi } from "../ui/carousel";
+import { Button } from "../ui/button";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ const CATEGORIES: { name: RatingCategories }[] = [
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
-  const { isRTL } = useLanguage();
+  const { isRTL, translation } = useLanguage();
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -61,6 +62,12 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     else moveLeft();
   };
 
+  const onSubmit = () => {
+    if (!isValid(rankingContext)) {
+      alert("Please fill in all fields");
+    }
+  };
+
   // Calculate button states based on RTL
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
@@ -79,7 +86,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   return (
     <RankingContext.Provider value={rankingContext}>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="flex h-[500px] min-w-[80vh] flex-col sm:max-w-[500px]">
+        <DialogContent className="mx-2 flex h-[70vh] w-[90vw] flex-col md:h-[400px] md:w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-center">{}</DialogTitle>
           </DialogHeader>
@@ -113,7 +120,18 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
             />
           </Carousel>
 
-          <DialogFooter className="absolute bottom-0 pb-2"></DialogFooter>
+          <DialogFooter
+            className={`absolute bottom-0 pb-2 ${isRTL ? "left-2" : "right-2"}`}
+          >
+            {current === CATEGORIES.length - 1 && (
+              <Button
+                onClick={onSubmit}
+                className="w-full rounded-md bg-gray-800 py-2 text-white"
+              >
+                {translation.submit}
+              </Button>
+            )}
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </RankingContext.Provider>
@@ -142,3 +160,13 @@ export const RankingContext = React.createContext<RankingContextType>({
   overallScore: 0,
   overallComment: "",
 });
+
+function isValid(context: RankingContextType) {
+  return (
+    context.examDifficulty > 0 &&
+    context.assignmentDifficulty > 0 &&
+    context.interestLevel > 0 &&
+    context.overallScore > 0 &&
+    context.overallComment !== ""
+  );
+}
