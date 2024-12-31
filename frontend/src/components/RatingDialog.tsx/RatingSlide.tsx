@@ -27,16 +27,13 @@ export function RatingSlide({ name, api }: RatingSlideProps) {
 
   useEffect(() => {
     if (name === "assignmentDifficulty") {
-      ctx.assignmentComment = comment;
       ctx.assignmentDifficulty = rating;
     }
     if (name === "examDifficulty") {
-      ctx.examComment = comment;
       ctx.examDifficulty = rating;
     }
     if (name === "interestLevel") {
       ctx.interestLevel = rating;
-      ctx.interestComment = comment;
     }
     if (name === "overallScore") {
       ctx.overallScore = rating;
