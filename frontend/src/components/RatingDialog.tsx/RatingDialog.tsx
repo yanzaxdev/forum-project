@@ -12,10 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "~/components/ui/carousel";
-import { TranslationKeys } from "~/translations";
 import { useLanguage } from "~/app/providers";
-import { RatingSlide } from "./RatingSlide";
-import { CarouselApi } from "../ui/course_carousel";
+import { RatingCategories, RatingSlide } from "./RatingSlide";
+import { CarouselApi } from "../ui/carousel";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -23,7 +22,7 @@ interface RankingDialogProps {
   onComplete?: () => void;
 }
 
-const CATEGORIES: { name: TranslationKeys }[] = [
+const CATEGORIES: { name: RatingCategories }[] = [
   { name: "examDifficulty" },
   { name: "assignmentDifficulty" },
   { name: "interestLevel" },

@@ -64,6 +64,8 @@ export const xTrans = {
     completeRanking: 'Complete Ranking',
     grade: 'Grade',
     enterYourComments: 'Enter your comments',
+    leaveAComment: 'Leave a comment',
+    commentHere: 'Comment here',
   },
   he: {
     _self: 'עברית',
@@ -118,8 +120,8 @@ export const xTrans = {
     creditPoints: 'נקודות זכות',
     department: 'מחלקה',
     gradeAverage: 'ממוצע ציונים',
-    examDifficulty: 'קושי מבחן',
-    assignmentDifficulty: 'קושי מטלה',
+    examDifficulty: 'קושי המבחן',
+    assignmentDifficulty: 'קושי מטלות',
     interestLevel: 'רמת עניין',
     overallScore: 'ציון כללי',
     createdAt: 'נוצר ב',
@@ -127,5 +129,7 @@ export const xTrans = {
     completeRanking: 'השלם דירוג',
     grade: 'ציון',
     enterYourComments: 'הזן את ההערות שלך',
+    leaveAComment: 'השאר תגובה',
+    commentHere: 'השאר את התגובה שלך כאן',
   },
 };
