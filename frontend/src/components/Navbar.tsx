@@ -21,7 +21,7 @@ const NavBar: FC = () => {
 
   return (
     <nav
-      dir={isHeb ? "rtl" : "ltr"}
+      dir={isRTL ? "rtl" : "ltr"}
       className={cn(
         "sticky top-0 z-50",
         "flex h-16 items-center justify-between",

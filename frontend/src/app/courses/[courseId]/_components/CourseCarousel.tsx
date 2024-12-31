@@ -2,7 +2,7 @@
 
 import { type FC } from "react";
 import { useLanguage } from "~/app/providers";
-import { Carousel } from "~/components/ui/course_carousel";
+import { Carousel } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import { useTabs } from "../useTabs";
 import CourseCarouselNav from "./CourseCarouselNav";
@@ -16,6 +16,7 @@ export interface TabbedContentProps {
 
 const CourseCarousel: FC<TabbedContentProps> = ({ className, course }) => {
   const { isRTL, dir } = useLanguage();
+
   const { activeTab, setApi, skipAnimation, handleTabClick, api } =
     useTabs(DEFAULT_TABS);
 
@@ -27,12 +28,6 @@ const CourseCarousel: FC<TabbedContentProps> = ({ className, course }) => {
 
   return (
     <section className={cn("flex min-h-0 flex-1 flex-col", className)}>
-      <CourseCarouselNav
-        tabs={DEFAULT_TABS}
-        activeTab={activeTab}
-        handleTabClick={handleTabClick}
-      />
-
       <Carousel
         className={cn(
           "flex flex-grow flex-col bg-white dark:bg-gray-800",
@@ -48,6 +43,11 @@ const CourseCarousel: FC<TabbedContentProps> = ({ className, course }) => {
           direction: dir, // Set carousel direction
         }}
       >
+        <CourseCarouselNav
+          tabs={DEFAULT_TABS}
+          activeTab={activeTab}
+          handleTabClick={handleTabClick}
+        />
         <CourseCarouselContent
           onContentClick={handleContentClick}
           course={course}

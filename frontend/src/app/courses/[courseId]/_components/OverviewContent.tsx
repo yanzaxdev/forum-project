@@ -6,7 +6,7 @@ import { useLanguage } from "~/app/providers";
 import RankingDialog from "~/components/RankingDialog.tsx/RankingDialog";
 import { H1, P } from "~/components/Typography";
 import { Button } from "~/components/ui/button";
-import { CarouselItem } from "~/components/ui/course_carousel";
+import { CarouselItem } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 
 interface Props {
@@ -39,21 +39,21 @@ const OverviewContent: FC<Props> = ({ course }) => {
 
   /* ----- Return -----*/
   return (
-    <CarouselItem className="P-6 relative h-full w-full rounded-lg bg-white dark:bg-gray-800">
+    <CarouselItem className="relative h-full w-full rounded-lg bg-white p-6 dark:bg-gray-800">
       <Button
         onClick={() => setIsRankingOpen(true)}
         className={cn(
           "absolute top-4 mx-4 rounded-lg bg-blue-500 px-4 py-2 text-white shadow-md hover:bg-blue-600",
-          isHeb ? "left-4" : "right-4",
+          isRTL ? "left-4" : "right-4",
         )}
       >
         {translation.rankThis}
       </Button>
       <H1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
-        {isHeb ? titleHe : titleEn}
+        {isRTL ? titleHe : titleEn}
       </H1>
       <P className="mb-6 text-lg text-gray-700 dark:text-gray-300">
-        {isHeb ? descriptionHe : descriptionEn}
+        {isRTL ? descriptionHe : descriptionEn}
       </P>
       <div className="grid grid-cols-2 gap-4">
         <P className="text-gray-600 dark:text-gray-400">

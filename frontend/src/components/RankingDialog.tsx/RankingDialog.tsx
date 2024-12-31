@@ -15,7 +15,7 @@ import {
 import { TranslationKeys } from "~/translations";
 import { useLanguage } from "~/app/providers";
 import { RatingSlide } from "./RatingSlide";
-import { CarouselApi } from "../ui/course_carousel";
+import { CarouselApi } from "../ui/carousel";
 
 interface RankingDialogProps {
   isOpen: boolean;

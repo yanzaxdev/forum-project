@@ -20,7 +20,7 @@ const ForumSheet: FC<ForumSheetProps> = () => {
   const { isRTL, setLanguage, translation: t, langParam } = useLanguage();
 
   const handleLanguageToggle = () => {
-    const newLang = isHeb ? Lang.EN : Lang.HE;
+    const newLang = isRTL ? Lang.EN : Lang.HE;
     setLanguage(newLang);
 
     const currentUrl = new URL(window.location.href);
@@ -35,7 +35,7 @@ const ForumSheet: FC<ForumSheetProps> = () => {
   return (
     <SheetContent
       dir={t._dir}
-      side={isHeb ? "right" : "left"}
+      side={isRTL ? "right" : "left"}
       className={cn(
         "fixed w-full p-0",
         "sm:w-[300px]",

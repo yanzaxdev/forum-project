@@ -1,6 +1,6 @@
 "use client";
 
-import { CarouselItem } from "../ui/course_carousel";
+import { CarouselItem } from "../ui/carousel";
 import { useLanguage } from "~/app/providers";
 import { TranslationKeys } from "~/translations";
 import { Star } from "lucide-react";
