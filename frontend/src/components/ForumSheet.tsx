@@ -8,6 +8,7 @@ import { cn } from "~/lib/utils";
 import { SheetContent, SheetFooter, SheetHeader, SheetTitle } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { Lang } from "~/utils/language";
 
 interface ForumSheetProps {
   open?: boolean;
@@ -16,21 +17,16 @@ interface ForumSheetProps {
 
 const ForumSheet: FC<ForumSheetProps> = () => {
   const router = useRouter();
-  const {
-    isRTL: isHeb,
-    setLanguage,
-    translation: t,
-    langParam,
-  } = useLanguage();
+  const { isRTL, setLanguage, translation: t, langParam } = useLanguage();
 
   const handleLanguageToggle = () => {
-    const newLang = isHeb ? "en" : "he";
+    const newLang = isRTL ? Lang.EN : Lang.HE;
     setLanguage(newLang);
 
     const currentUrl = new URL(window.location.href);
     const searchParams = new URLSearchParams(currentUrl.search);
 
-    if (newLang === "he") searchParams.delete("lang");
+    if (newLang === Lang.HE) searchParams.delete("lang");
     else searchParams.set("lang", newLang);
 
     router.push(`${currentUrl.pathname}?${searchParams.toString()}`);
@@ -39,7 +35,7 @@ const ForumSheet: FC<ForumSheetProps> = () => {
   return (
     <SheetContent
       dir={t._dir}
-      side={isHeb ? "right" : "left"}
+      side={isRTL ? "right" : "left"}
       className={cn(
         "fixed w-full p-0",
         "sm:w-[300px]",

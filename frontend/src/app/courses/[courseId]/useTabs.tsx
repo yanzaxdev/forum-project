@@ -1,6 +1,6 @@
 // useTabs.ts
 import { useCallback, useEffect, useState } from "react";
-import { type CarouselApi } from "~/components/ui/course_carousel";
+import { type CarouselApi } from "~/components/ui/carousel";
 import { TabItem } from "./_components/CourseCarouselContent";
 
 export function useTabs(tabs: TabItem[]) {

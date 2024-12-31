@@ -11,7 +11,7 @@ import { SheetTrigger } from "./ui/sheet";
 
 const NavBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isRTL: isHeb, translation: t, langParam } = useLanguage();
+  const { isRTL, translation: t, langParam } = useLanguage();
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -21,7 +21,7 @@ const NavBar: FC = () => {
 
   return (
     <nav
-      dir={isHeb ? "rtl" : "ltr"}
+      dir={isRTL ? "rtl" : "ltr"}
       className={cn(
         "sticky top-0 z-50",
         "flex h-16 items-center justify-between",

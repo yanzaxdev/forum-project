@@ -10,20 +10,25 @@ import React, {
   type ReactNode,
 } from "react";
 import { xTrans } from "~/translations";
+import { Lang } from "~/utils/language";
 
-type Language = "en" | "he";
-
+export enum Dir {
+  LTR = "ltr",
+  RTL = "rtl",
+}
 interface LanguageContextType {
-  lang: Language;
+  lang: Lang;
   isRTL: boolean;
-  translation: typeof xTrans.en | typeof xTrans.he;
+  dir: Dir;
+  translation: typeof xTrans.en & typeof xTrans.he;
   langParam: string;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (lang: Lang) => void;
 }
 
 const defaultLanguageContext: LanguageContextType = {
-  lang: "en",
+  lang: Lang.HE,
   isRTL: false,
+  dir: Dir.LTR,
   translation: xTrans.en,
   langParam: "",
   setLanguage: () => {
@@ -42,8 +47,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const currentLang = searchParams.get("lang") as Language;
-  const [lang, setLang] = useState<Language>(currentLang || "he");
+  const currentLang = searchParams.get("lang") as Lang;
+  const [lang, setLang] = useState<Lang>(currentLang || "he");
 
   useEffect(() => {
     setMounted(true);
@@ -53,21 +58,24 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     if (currentLang) setLang(currentLang);
   }, [currentLang]);
 
-  const setLanguage = (newLang: Language) => {
+  const setLanguage = (newLang: Lang) => {
     setLang(newLang);
     const params = new URLSearchParams(searchParams);
-    if (newLang === "he") params.delete("lang");
+    if (newLang === Lang.HE) params.delete("lang");
     else params.set("lang", newLang);
     router.push(`?${params.toString()}`);
   };
 
   if (!mounted) return null;
 
+  const isRTL = lang === Lang.HE;
+
   const contextValue: LanguageContextType = {
     lang,
-    isRTL: lang === "he",
-    translation: lang === "he" ? xTrans.he : xTrans.en,
-    langParam: lang === "he" ? "" : "?lang=en",
+    isRTL,
+    dir: isRTL ? Dir.RTL : Dir.LTR,
+    translation: lang === Lang.HE ? xTrans.he : xTrans.en,
+    langParam: lang === Lang.HE ? "" : "?lang=en",
     setLanguage,
   };
 

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CarouselContent, CarouselItem } from "~/components/ui/course_carousel";
+import { CarouselContent, CarouselItem } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import {
   Book,
@@ -23,14 +23,10 @@ const CourseCarouselContent: FC<CourseCarouselContentProps> = ({
 }) => {
   return (
     <CarouselContent className={cn("h-full flex-1 cursor-pointer", className)}>
-      {DEFAULT_TABS.map((tab) => {
-        if (tab.id === "overview")
-          return <OverviewContent key={tab.id} course={course} />;
-        else if (tab.id === "forum") return <CarouselItem key={"forum"} />;
-        else if (tab.id === "reviews") return <CarouselItem key={"reviews"} />;
-        else if (tab.id === "tutors") return <CarouselItem key={"tutors"} />;
-        return <></>;
-      })}
+      <OverviewContent course={course} />;
+      <CarouselItem key={"forum"} />;
+      <CarouselItem key={"reviews"} />;
+      <CarouselItem key={"tutors"} />;
     </CarouselContent>
   );
 };
@@ -67,29 +63,9 @@ export const DEFAULT_TABS: TabItem[] = [
   },
 ];
 
-{
-  /* <CarouselItem key={tab.id}>
-  <article
-    className={cn(
-      "prose dark:prose-invert",
-      "flex h-full max-w-none flex-col",
-      "p-6",
-    )}
-  >
-    <h2
-      className={cn(
-        "mb-4 flex-none",
-        "text-2xl font-bold",
-        "text-gray-900 dark:text-white",
-      )}
-    >
-      {t[tab.id]}
-    </h2>
-    <div
-      className={cn("flex-1 overflow-auto", "text-gray-600 dark:text-gray-300")}
-    >
-      {t[tab.id]}
-    </div>
-  </article>
-</CarouselItem>; */
+export enum TabID {
+  OVERVIEW = "overview",
+  REVIEWS = "reviews",
+  FORUM = "forum",
+  TUTORS = "tutors",
 }
