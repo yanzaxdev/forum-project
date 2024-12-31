@@ -63,6 +63,7 @@ export const xTrans = {
     rankThis: 'Rank this',
     completeRanking: 'Complete Ranking',
     grade: 'Grade',
+    enterYourComments: 'Enter your comments',
   },
   he: {
     _self: 'עברית',
@@ -125,6 +126,6 @@ export const xTrans = {
     rankThis: 'דרג',
     completeRanking: 'השלם דירוג',
     grade: 'ציון',
-
+    enterYourComments: 'הזן את ההערות שלך',
   },
 };

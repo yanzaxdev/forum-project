@@ -8,6 +8,7 @@ import { Star } from "lucide-react";
 import { CarouselApi } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import { RankingContext as RatingContext } from "./RatingDialog";
+import AccordionComment from "./AccordionComment";
 
 interface RatingSlideProps {
   name: TranslationKeys;
@@ -17,7 +18,7 @@ interface RatingSlideProps {
 export function RatingSlide({ name }: RatingSlideProps) {
   const { translation } = useLanguage();
   const [rating, setRating] = useState<number>(0);
-  const {} = useContext(RatingContext);
+  const ctx = useContext(RatingContext);
 
   const handleStarClick = (starIndex: number) => {
     setRating(starIndex);
@@ -50,6 +51,13 @@ export function RatingSlide({ name }: RatingSlideProps) {
             ))}
           </div>
         </div>
+        <AccordionComment title={translation.enterYourComments}>
+          <textarea
+            className="w-full rounded-md border p-4"
+            placeholder="Write your comment here"
+            rows={4}
+          />
+        </AccordionComment>
       </div>
     </CarouselItem>
   );
