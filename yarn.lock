@@ -27,7 +27,7 @@
     "@clerk/types" "^4.40.0"
     tslib "2.4.1"
 
-"@clerk/nextjs@^6.9.0":
+"@clerk/nextjs@^6.9.6":
   version "6.9.6"
   resolved "https://registry.yarnpkg.com/@clerk/nextjs/-/nextjs-6.9.6.tgz#8e20b3fdd8592260b6351db993334f3c5dca0375"
   integrity sha512-wmbQd2UYOnvGtidgEAqD6f2JZjvKMlmZqnT2HbR3GKwiGme3c1wLrkPye5tknaFLJHsA+Zfp7MJtL7mu07yCzw==

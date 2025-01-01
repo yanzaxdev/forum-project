@@ -8,9 +8,7 @@ import NavBar from "~/components/Navbar";
 import { Sheet } from "~/components/ui/sheet";
 import ForumSheet from "~/components/ForumSheet";
 import { getLang } from "~/utils/language";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { ClerkProvider } from "@clerk/nextjs";
 
 const FONT_ASSISTANT = Assistant({
   subsets: ["hebrew"],
@@ -45,7 +43,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { lang } = await getLang();
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <ClerkProvider>
       <html
         lang={lang}
         suppressHydrationWarning
@@ -75,7 +73,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           </Suspense>
         </body>
       </html>
-    </QueryClientProvider>
+    </ClerkProvider>
   );
 };
 

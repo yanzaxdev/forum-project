@@ -8,10 +8,14 @@ import { cn } from "~/lib/utils";
 import { useLanguage } from "~/app/providers";
 import { Button } from "./ui/button";
 import { SheetTrigger } from "./ui/sheet";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/clerk-react";
 
 const NavBar: FC = () => {
   const { theme, setTheme } = useTheme();
   const { isRTL, translation: t, langParam } = useLanguage();
+  const user = useAuth();
+  console.log(user);
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -50,6 +54,14 @@ const NavBar: FC = () => {
           <span className="sr-only">Home</span>
         </Link>
 
+        <SignedOut>
+          <SignInButton>
+            <Button className="rounded bg-blue-500 px-4 py-2">Sign In</Button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <Link
           href={`/courses${langParam}`}
           className={cn(
