@@ -1,4 +1,4 @@
-export interface RankingContextType {
+export interface RatingPayload {
   examDifficulty: number;
   assignmentDifficulty: number;
   interestLevel: number;

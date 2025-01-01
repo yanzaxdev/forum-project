@@ -1,6 +1,7 @@
 // controllers/courseController.ts
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
+import {RatingPayload} from '~/types/ranking';
 
 import {db} from '../db';
 import {courses} from '../db/schema';
@@ -51,5 +52,19 @@ export const courseController = {
             res.status(500).json({error: 'Unknown error occurred'});
           }
         }
-      }
+      },
+
+  handleRatingPayload: async (req: Request, res: Response) => {
+    const payload: RatingPayload = req.body;
+
+    // Your logic to handle the rating payload
+    try {
+      // For example, save the payload to the database
+      // await saveRatingToDatabase(payload);
+
+      res.status(200).json({message: 'Rating submitted successfully'});
+    } catch (error) {
+      res.status(500).json({message: 'Error submitting rating', error});
+    }
+  },
 };

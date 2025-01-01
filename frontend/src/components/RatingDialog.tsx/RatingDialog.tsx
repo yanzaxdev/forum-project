@@ -18,7 +18,7 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
-import { RankingContextType } from "$/ranking";
+import { RatingPayload } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
 interface RankingDialogProps {
   isOpen: boolean;
@@ -47,7 +47,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const submitRating = useMutation({
-    mutationFn: async (data: RankingContextType) => {
+    mutationFn: async (data: RatingPayload) => {
       const response = await expressAPI.post("/api/rating", data);
       return response;
     },
@@ -104,7 +104,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
-  const rankingContext: RankingContextType = React.useMemo(
+  const rankingContext: RatingPayload = React.useMemo(
     () => ({
       examDifficulty: 0,
       assignmentDifficulty: 0,
@@ -120,7 +120,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     localStorage.setItem("rating", JSON.stringify(rankingContext));
     const data = localStorage.getItem("rating");
     if (data) {
-      const rating = JSON.parse(data) as RankingContextType;
+      const rating = JSON.parse(data) as RatingPayload;
       rankingContext.examDifficulty = rating.examDifficulty;
       rankingContext.assignmentDifficulty = rating.assignmentDifficulty;
       rankingContext.interestLevel = rating.interestLevel;
@@ -186,7 +186,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
 export default RatingDialog;
 
-export const RankingContext = React.createContext<RankingContextType>({
+export const RankingContext = React.createContext<RatingPayload>({
   examDifficulty: 0,
   assignmentDifficulty: 0,
   interestLevel: 0,
@@ -195,7 +195,7 @@ export const RankingContext = React.createContext<RankingContextType>({
   userID: "",
 });
 
-function isValid(context: RankingContextType) {
+function isValid(context: RatingPayload) {
   return (
     context.examDifficulty > 0 &&
     context.assignmentDifficulty > 0 &&
