@@ -6,22 +6,27 @@ import { useLanguage } from "~/app/providers";
 import { Star } from "lucide-react";
 import { CarouselApi } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
-import { RankingContext as RatingContext } from "./RatingDialog";
+import {
+  RatingCategory,
+  RankingContext as RatingContext,
+} from "./RatingDialog";
 
 export type RatingCategories =
   | "examDifficulty"
   | "assignmentDifficulty"
   | "interestLevel"
   | "overallScore";
+
 interface RatingSlideProps {
-  name: RatingCategories;
+  category: RatingCategory;
   api: CarouselApi;
 }
 
-export function RatingSlide({ name, api }: RatingSlideProps) {
+export function RatingSlide({ category, api }: RatingSlideProps) {
+  const { name, rating: initRating, comment: initComment } = category;
   const { translation, dir } = useLanguage();
-  const [rating, setRating] = useState<number>(0);
-  const [comment, setComment] = useState<string>("");
+  const [rating, setRating] = useState<number>(initRating ?? 0);
+  const [comment, setComment] = useState<string>(initComment ?? "");
 
   const ctx = useContext(RatingContext);
 
@@ -40,6 +45,10 @@ export function RatingSlide({ name, api }: RatingSlideProps) {
       ctx.overallComment = comment;
     }
   });
+
+  useEffect(() => {
+    localStorage.setItem("rating", JSON.stringify(ctx));
+  }, [rating, comment, ctx]);
 
   const handleStarClick = (starIndex: number) => {
     setRating(starIndex);

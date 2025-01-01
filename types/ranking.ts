@@ -4,4 +4,5 @@ export interface RankingContextType {
   interestLevel: number;
   overallScore: number;
   overallComment: string;
+  userID: string
 }

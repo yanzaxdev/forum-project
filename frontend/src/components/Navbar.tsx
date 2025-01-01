@@ -9,13 +9,10 @@ import { useLanguage } from "~/app/providers";
 import { Button } from "./ui/button";
 import { SheetTrigger } from "./ui/sheet";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { useAuth } from "@clerk/clerk-react";
 
 const NavBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isRTL, translation: t, langParam } = useLanguage();
-  const user = useAuth();
-  console.log(user);
+  const { isRTL, translation, langParam } = useLanguage();
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -38,10 +35,12 @@ const NavBar: FC = () => {
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className={COMMON_HOVER_CLASSES}>
             <Menu className="h-5 w-5" />
-            <span className="sr-only">Open menu</span>
           </Button>
         </SheetTrigger>
 
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <Link
           href={`/${langParam}`}
           className={cn(
@@ -51,17 +50,13 @@ const NavBar: FC = () => {
           )}
         >
           <House className="h-5 w-5" />
-          <span className="sr-only">Home</span>
         </Link>
 
         <SignedOut>
           <SignInButton>
-            <Button className="rounded bg-blue-500 px-4 py-2">Sign In</Button>
+            <Button>{translation.signIn}</Button>
           </SignInButton>
         </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
         <Link
           href={`/courses${langParam}`}
           className={cn(
@@ -70,7 +65,7 @@ const NavBar: FC = () => {
             COMMON_HOVER_CLASSES,
           )}
         >
-          {t.courses}
+          {translation.courses}
         </Link>
       </div>
 
