@@ -19,18 +19,23 @@ import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
 import { RankingContextType } from "$/ranking";
-
+import { SignIn, useUser } from "@clerk/nextjs";
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete?: () => void;
 }
 
-const CATEGORIES: { name: RatingCategories }[] = [
-  { name: "examDifficulty" },
-  { name: "assignmentDifficulty" },
-  { name: "interestLevel" },
-  { name: "overallScore" },
+export interface RatingCategory {
+  name: RatingCategories;
+  rating: number;
+  comment?: string;
+}
+const CATEGORIES: RatingCategory[] = [
+  { name: "examDifficulty", rating: 0, comment: "" },
+  { name: "assignmentDifficulty", rating: 0, comment: "" },
+  { name: "interestLevel", rating: 0, comment: "" },
+  { name: "overallScore", rating: 0, comment: "" },
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
@@ -38,6 +43,8 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const user = useUser();
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const submitRating = useMutation({
     mutationFn: async (data: RankingContextType) => {
@@ -81,30 +88,55 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const onSubmit = async () => {
     if (!isValid(rankingContext)) {
       alert("Please fill in all fields");
+      return;
     }
-    submitRating.mutate(rankingContext);
+
+    if (user.isSignedIn) {
+      submitRating.mutate(rankingContext);
+    }
+    if (!user.isSignedIn) {
+      setShowSignIn(true);
+      return;
+    }
   };
 
   // Calculate button states based on RTL
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
-  const rankingContext: RankingContextType = {
-    examDifficulty: 0,
-    assignmentDifficulty: 0,
-    interestLevel: 0,
-    overallScore: 0,
-    overallComment: "",
-  };
+  const rankingContext: RankingContextType = React.useMemo(
+    () => ({
+      examDifficulty: 0,
+      assignmentDifficulty: 0,
+      interestLevel: 0,
+      overallScore: 0,
+      overallComment: "",
+      userID: user.isSignedIn ? user.user.id : "",
+    }),
+    [user.isSignedIn, user.user],
+  );
+
+  useEffect(() => {
+    localStorage.setItem("rating", JSON.stringify(rankingContext));
+    const data = localStorage.getItem("rating");
+    if (data) {
+      const rating = JSON.parse(data) as RankingContextType;
+      rankingContext.examDifficulty = rating.examDifficulty;
+      rankingContext.assignmentDifficulty = rating.assignmentDifficulty;
+      rankingContext.interestLevel = rating.interestLevel;
+      rankingContext.overallScore = rating.overallScore;
+      rankingContext.overallComment = rating.overallComment;
+    }
+  }, [rankingContext]);
 
   return (
     <RankingContext.Provider value={rankingContext}>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="mx-2 flex h-[70vh] w-[90vw] flex-col md:h-[400px] md:w-[500px]">
+        <DialogContent className="flex h-[70vh] w-[90vw] flex-col p-8 md:h-[400px] md:w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-center">{}</DialogTitle>
           </DialogHeader>
-
+          {showSignIn && <SignIn />}
           <Carousel
             opts={{
               direction: isRTL ? "rtl" : "ltr",
@@ -117,7 +149,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
                 <RatingSlide
                   api={api}
                   key={category.name}
-                  name={category.name}
+                  category={category}
                 />
               ))}
             </CarouselContent>
@@ -160,6 +192,7 @@ export const RankingContext = React.createContext<RankingContextType>({
   interestLevel: 0,
   overallScore: 0,
   overallComment: "",
+  userID: "",
 });
 
 function isValid(context: RankingContextType) {

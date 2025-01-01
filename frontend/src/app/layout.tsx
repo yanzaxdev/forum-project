@@ -8,9 +8,8 @@ import NavBar from "~/components/Navbar";
 import { Sheet } from "~/components/ui/sheet";
 import ForumSheet from "~/components/ForumSheet";
 import { getLang } from "~/utils/language";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { ClerkProvider } from "@clerk/nextjs";
+import { heIL } from "@clerk/localizations";
 
 const FONT_ASSISTANT = Assistant({
   subsets: ["hebrew"],
@@ -45,7 +44,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { lang } = await getLang();
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <ClerkProvider localization={heIL}>
       <html
         lang={lang}
         suppressHydrationWarning
@@ -75,8 +74,84 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
           </Suspense>
         </body>
       </html>
-    </QueryClientProvider>
+    </ClerkProvider>
   );
 };
 
 export default RootLayout;
+
+const hebClerk = {
+  signIn: {
+    title: "התחברות",
+    subtitle: "המשך להתחברות",
+    emailAddressLabel: "כתובת אימייל",
+    emailAddressPlaceholder: "הכנס את כתובת האימייל שלך",
+    passwordLabel: "סיסמה",
+    passwordPlaceholder: "הכנס את הסיסמה שלך",
+    continueButtonLabel: "המשך",
+    forgotPasswordLink: "שכחת סיסמה?",
+    formButtonPrimary: "התחבר",
+    backButton: "חזור",
+    alternativeMethods: {
+      title: "או התחבר באמצעות",
+      google: "התחבר עם Google",
+      facebook: "התחבר עם Facebook",
+    },
+  },
+  signUp: {
+    title: "הרשמה",
+    subtitle: "צור חשבון חדש",
+    emailAddressLabel: "כתובת אימייל",
+    emailAddressPlaceholder: "הכנס את כתובת האימייל שלך",
+    passwordLabel: "סיסמה",
+    passwordPlaceholder: "צור סיסמה חדשה",
+    passwordRequirements: "הסיסמה חייבת להכיל לפחות 8 תווים",
+    continueButtonLabel: "המשך",
+    formButtonPrimary: "הירשם",
+    backButton: "חזור",
+    alternativeMethods: {
+      title: "או הירשם באמצעות",
+      google: "הירשם עם Google",
+      facebook: "הירשם עם Facebook",
+    },
+  },
+  // Add more translations as needed
+};
+
+const engClerk = {
+  signIn: {
+    title: "Sign in",
+    subtitle: "to continue to the application",
+    emailAddressLabel: "Email address",
+    emailAddressPlaceholder: "Enter your email",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Enter your password",
+    continueButtonLabel: "Continue",
+    forgotPasswordLink: "Forgot password?",
+    formButtonPrimary: "Sign in",
+    backButton: "Back",
+    alternativeMethods: {
+      title: "Or continue with",
+      google: "Continue with Google",
+      facebook: "Continue with Facebook",
+    },
+  },
+  signUp: {
+    title: "Sign up",
+    subtitle: "Create a new account",
+    emailAddressLabel: "Email address",
+    emailAddressPlaceholder: "Enter your email",
+    passwordLabel: "Password",
+    passwordPlaceholder: "Create a password",
+    passwordRequirements: "Must be at least 8 characters",
+    continueButtonLabel: "Continue",
+    formButtonPrimary: "Sign up",
+    backButton: "Back",
+    alternativeMethods: {
+      title: "Or sign up with",
+      google: "Sign up with Google",
+      facebook: "Sign up with Facebook",
+    },
+  },
+  // Add more translations as needed
+};

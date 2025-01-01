@@ -66,6 +66,10 @@ export const xTrans = {
     enterYourComments: 'Enter your comments',
     leaveAComment: 'Leave a comment',
     commentHere: 'Comment here',
+    signIn: 'Sign In',
+    signOut: 'Sign Out',
+    signUp: 'Sign Up',
+
   },
   he: {
     _self: 'עברית',
@@ -131,5 +135,8 @@ export const xTrans = {
     enterYourComments: 'הזן את ההערות שלך',
     leaveAComment: 'השאר תגובה',
     commentHere: 'השאר את התגובה שלך כאן',
+    signIn: 'התחבר',
+    signOut: 'התנתק',
+    signUp: 'הרשם',
   },
 };

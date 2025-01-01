@@ -11,11 +11,15 @@ import React, {
 } from "react";
 import { xTrans } from "~/translations";
 import { Lang } from "~/utils/language";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export enum Dir {
   LTR = "ltr",
   RTL = "rtl",
 }
+
+const queryClient = new QueryClient();
+
 interface LanguageContextType {
   lang: Lang;
   isRTL: boolean;
@@ -80,11 +84,13 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <LanguageContext.Provider value={contextValue}>
-        {children}
-      </LanguageContext.Provider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <LanguageContext.Provider value={contextValue}>
+          {children}
+        </LanguageContext.Provider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
