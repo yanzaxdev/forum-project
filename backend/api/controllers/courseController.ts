@@ -1,10 +1,11 @@
 // controllers/courseController.ts
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
+import {z} from 'zod';
 import {RatingPayload} from '~/types/ranking';
 
 import {db} from '../db';
-import {courses} from '../db/schema';
+import {CourseRanking, courseRankings, courses, zRatingSchema} from '../db/schema';
 
 interface CourseParams {
   id: string;
@@ -54,17 +55,28 @@ export const courseController = {
         }
       },
 
-  handleRatingPayload: async (req: Request, res: Response) => {
-    const payload: RatingPayload = req.body;
-
-    // Your logic to handle the rating payload
+  handleRatingPayload: async(req: Request, res: Response): Promise<void> => {
     try {
-      // For example, save the payload to the database
-      // await saveRatingToDatabase(payload);
+      const payload = zRatingSchema.parse(req.body);
+      // When inserting into courseRankings
+      const parsedRating = {
+        ...payload,
+        examDifficulty: payload.examDifficulty.toString(),
+        assignmentDifficulty: payload.assignmentDifficulty.toString(),
+        interestLevel: payload.interestLevel.toString(),
+        grade: payload.grade.toString()
+      };
+      await db.insert(courseRankings).values(parsedRating)
+
 
       res.status(200).json({message: 'Rating submitted successfully'});
     } catch (error) {
-      res.status(500).json({message: 'Error submitting rating', error});
+      if (error instanceof z.ZodError) {
+        res.status(400).json(
+            {message: 'Validation error', errors: error.errors});
+      } else {
+        res.status(500).json({message: 'Error submitting rating', error});
+      }
     }
   },
 };

@@ -32,8 +32,10 @@ export const expressAPI = {
     try {
       const response = await fetch(`${baseUrl}${url}`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+
         },
         body: JSON.stringify(data),
       });

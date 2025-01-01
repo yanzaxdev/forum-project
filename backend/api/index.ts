@@ -1,3 +1,4 @@
+import {clerkClient, clerkMiddleware, requireAuth} from '@clerk/express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -8,24 +9,18 @@ dotenv.config();
 
 const app = express();
 
-// Enable CORS for all routes
-app.use(cors({origin: process.env.CORS_ORIGIN}));
-app.use(cors())
 
-// Routes
+app.use(clerkMiddleware())
+app.use(cors({origin: process.env.CORS_ORIGIN}));
 app.use('/api', courseRouter);  // This will prefix all routes with /api
 
-
-// Add this before your other routes
 app.get('/', (req, res) => {
   res.json({message: 'Server is running'});
 });
-
-
-
 app.get('/api/test', (req, res) => {
   res.json({message: 'Hello world'});
 });
+
 
 if (process.env.CORS_ORIGIN === 'http://localhost:3000') {
   app.listen(3001, () => {

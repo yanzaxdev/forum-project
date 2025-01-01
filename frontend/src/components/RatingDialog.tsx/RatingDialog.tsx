@@ -20,6 +20,7 @@ import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
 import { RatingPayload } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
+import { DialogDescription } from "@radix-ui/react-dialog";
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -48,7 +49,10 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
   const submitRating = useMutation({
     mutationFn: async (data: RatingPayload) => {
-      const response = await expressAPI.post("/api/rating", data);
+      const courseId = window.location.pathname.split("/")[2];
+      if (!courseId) return;
+      data.courseId = courseId;
+      const response = await expressAPI.post("/api/courses/rating", data);
       return response;
     },
     onSuccess: () => {
@@ -112,6 +116,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
       overallScore: 0,
       overallComment: "",
       userID: user.isSignedIn ? user.user.id : "",
+      courseId: "",
     }),
     [user.isSignedIn, user.user],
   );
@@ -135,6 +140,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
         <DialogContent className="flex h-[70vh] w-[90vw] flex-col p-8 md:h-[400px] md:w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-center">{}</DialogTitle>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
           {showSignIn && <SignIn />}
           <Carousel
@@ -193,6 +199,7 @@ export const RankingContext = React.createContext<RatingPayload>({
   overallScore: 0,
   overallComment: "",
   userID: "",
+  courseId: "",
 });
 
 function isValid(context: RatingPayload) {

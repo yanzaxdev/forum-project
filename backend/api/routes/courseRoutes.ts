@@ -37,7 +37,7 @@ courseRouter.post(
         req: Request<CourseParams, any, RatingPayload>, res: Response,
         next: NextFunction) => {
       try {
-        await courseController.handleRatingPayload(req, res);
+        // await courseController.handleRatingPayload(req, res);
       } catch (error) {
         next(error);
       }

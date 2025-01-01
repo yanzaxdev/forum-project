@@ -1,5 +1,6 @@
 import {InferSelectModel, sql} from 'drizzle-orm';
 import {decimal, index, integer, timestamp, unique} from 'drizzle-orm/pg-core';
+import {z} from 'zod';
 
 import {courses} from './courses';
 import {createTable} from './tableCreator';
@@ -30,3 +31,13 @@ export const courseRankings = createTable(
         index('user_id_idx').on(ranking.userId),
         unique('unique_course_user_ranking')
             .on(ranking.userId, ranking.courseId)]);
+
+
+export const zRatingSchema = z.object({
+  courseId: z.number().int().positive(),
+  userId: z.number().int().positive(),
+  grade: z.number().min(0).max(100).multipleOf(0.01),
+  examDifficulty: z.number().min(0).max(5).multipleOf(0.01),
+  assignmentDifficulty: z.number().min(0).max(5).multipleOf(0.01),
+  interestLevel: z.number().min(0).max(5).multipleOf(0.01)
+});
