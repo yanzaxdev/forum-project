@@ -1,14 +1,10 @@
-// routes/courseRoutes.ts
-import {getAuth} from '@clerk/express';
 import {NextFunction, Request, Response, Router} from 'express';
 
 import {courseController} from '../controllers/courseController';
-import {RatingPayload} from '../types/ranking'
 
 const courseRouter = Router();
 
 
-// Define the param interface
 interface CourseParams {
   id: string;
 }
@@ -33,16 +29,10 @@ courseRouter.get(
     });
 
 courseRouter.post(
-    '/courses/:id/rating',
+    '/courses/rating',
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const {userId} = getAuth(req)
-        if (!userId) {
-          res.status(401).json({error: 'Unauthorized'});
-          return;
-        }
-        const payload = ''
-        // await courseController.handleRatingPayload(req, res);
+        await courseController.handleRatingPayload(req, res);
       } catch (error) {
         next(error);
       }

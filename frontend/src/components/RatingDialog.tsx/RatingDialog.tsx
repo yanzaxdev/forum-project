@@ -113,13 +113,17 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
   const rankingContext: RatingPayload = React.useMemo(
     () => ({
+      userId: user.isSignedIn ? user.user.id : "",
       examDifficulty: 0,
+      grade: 0,
+      courseId: 0,
+      examComment: "",
       assignmentDifficulty: 0,
+      assignmentComment: "",
       interestLevel: 0,
+      interestComment: "",
       overallScore: 0,
       overallComment: "",
-      userID: user.isSignedIn ? user.user.id : "",
-      courseId: "",
     }),
     [user.isSignedIn, user.user],
   );
@@ -196,13 +200,17 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 export default RatingDialog;
 
 export const RankingContext = React.createContext<RatingPayload>({
+  courseId: 0,
+  userId: "",
+  grade: 0,
   examDifficulty: 0,
+  examComment: "",
   assignmentDifficulty: 0,
+  assignmentComment: "",
   interestLevel: 0,
+  interestComment: "",
   overallScore: 0,
   overallComment: "",
-  userId: "",
-  courseId: "",
 });
 
 function isValid(context: RatingPayload) {

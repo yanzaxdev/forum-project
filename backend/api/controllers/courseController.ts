@@ -4,7 +4,7 @@ import {Request, Response} from 'express';
 import {z} from 'zod';
 
 import {db} from '../db';
-import {courseRankings, courses, zRatingSchema} from '../db/schema';
+import {CourseRankingInsert, courseRankings, courses, zRatingSchema} from '../db/schema';
 
 interface CourseParams {
   id: string;
@@ -58,12 +58,19 @@ export const courseController = {
     try {
       const payload = zRatingSchema.parse(req.body);
       // When inserting into courseRankings
-      const parsedRating = {
-        ...payload,
+      const parsedRating: CourseRankingInsert = {
+        userId: payload.userId,
+        courseId: parseInt(req.params.id),
+        grade: payload.grade.toString(),
         examDifficulty: payload.examDifficulty.toString(),
+        examComment: payload.examComment,
         assignmentDifficulty: payload.assignmentDifficulty.toString(),
+        assignmentComment: payload.assignmentComment,
         interestLevel: payload.interestLevel.toString(),
-        grade: payload.grade.toString()
+        interestComment: payload.interestComment,
+        overallScore: payload.overallScore.toString(),
+        overallComment: payload.overallComment,
+
       };
       await db.insert(courseRankings).values(parsedRating)
 

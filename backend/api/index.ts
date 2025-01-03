@@ -1,4 +1,4 @@
-import {clerkClient, clerkMiddleware, requireAuth} from '@clerk/express';
+import {clerkMiddleware,} from '@clerk/express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
