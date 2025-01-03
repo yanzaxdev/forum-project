@@ -1,7 +1,7 @@
 import { type FC } from "react";
-import { type TabItem } from "./types";
 import TabButton from "./TabButton";
 import { cn } from "~/lib/utils";
+import { TabItem } from "./CourseCarouselContent";
 
 interface CarouselNavProps {
   tabs: TabItem[];

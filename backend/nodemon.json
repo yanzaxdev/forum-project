@@ -1,5 +1,6 @@
 {
   "watch": ["src"],
-  "ext": "ts",
-  "exec": "ts-node ./src/index.ts"
+  "ext": "ts,tsx,js,json",
+  "ignore": ["dist"],
+  "exec": "ts-node -r tsconfig-paths/register api/index.ts"
 }

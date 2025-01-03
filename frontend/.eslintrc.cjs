@@ -15,9 +15,11 @@ const config = {
     "@typescript-eslint/consistent-type-imports" : [
       "warn", {"prefer" : "type-imports", "fixStyle" : "inline-type-imports"}
     ],
+    "@typescript-eslint/await-thenable" : "off",
     '@typescript-eslint/no-unsafe-assignment' : 'off',
 
     "@typescript-eslint/consistent-type-imports" : "off",
+    "@typescript-eslint/no-unsafe-call" : "off",
     "@typescript-eslint/no-unused-vars" :
         [ "warn", {"argsIgnorePattern" : "^_"} ],
     "@typescript-eslint/require-await" : "off",
@@ -27,6 +29,11 @@ const config = {
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ],
     "drizzle/enforce-update-with-where" :
         [ "error", {"drizzleObjectName" : [ "db", "ctx.db" ]} ]
-  }
+
+  },
+  ignorePatterns : [
+    "node_modules/",
+    "dist/",
+  ],
 };
 module.exports = config;

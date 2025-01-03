@@ -1,3 +1,4 @@
+import { H1, P } from "~/components/Typography";
 import { getLang } from "../utils/language";
 import { cn } from "~/lib/utils";
 
@@ -10,21 +11,23 @@ interface HomePageProps {
 }
 
 const HomePage = async ({ searchParams }: HomePageProps) => {
-  const { translation } = await getLang(searchParams);
+  const { translation, dir } = await getLang(searchParams);
 
   return (
     <main
-      dir={translation._dir}
+      dir={dir}
       className={cn(
         "min-h-screen px-4 py-8",
         "flex flex-col items-center justify-center",
       )}
     >
-      <h1 className="mb-4 text-4xl font-bold">{translation.welcomeMessage}</h1>
+      <H1 className="mb-4 text-center text-4xl font-bold">
+        {translation.welcomeMessage}
+      </H1>
 
-      <p className="mb-6 max-w-md text-center text-lg">
+      <P className="mb-6 max-w-md text-center text-lg">
         {translation.welcomeDescription}
-      </p>
+      </P>
     </main>
   );
 };

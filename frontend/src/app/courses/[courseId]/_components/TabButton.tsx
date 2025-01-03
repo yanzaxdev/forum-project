@@ -30,7 +30,7 @@ const TabButton: FC<TabButtonProps> = ({
   onClick,
   disabled = false,
 }) => {
-  const { t } = useLanguage();
+  const { translation: t } = useLanguage();
   const Icon = tab.icon;
 
   return (

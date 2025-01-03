@@ -14,8 +14,8 @@ interface CourseProps {
 }
 
 const CoursePage = async ({ params, searchParams }: CourseProps) => {
-  const { translation } = await getLang(searchParams);
-  const pageParams = params;
+  const { dir } = await getLang(searchParams);
+  const pageParams = await params;
 
   const courseIdNum = parseInt(pageParams.courseId, 10);
   if (isNaN(courseIdNum)) notFound();
@@ -30,7 +30,7 @@ const CoursePage = async ({ params, searchParams }: CourseProps) => {
   }
 
   return (
-    <main dir={translation._dir} className="flex flex-1 flex-col py-1">
+    <main dir={dir} className="flex flex-1 flex-col py-1">
       <CourseCarousel course={course} className="flex-1" />
     </main>
   );

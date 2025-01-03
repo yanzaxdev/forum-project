@@ -4,13 +4,19 @@ import { type FC } from "react";
 import { useLanguage } from "~/app/providers";
 import { Carousel } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
-import { DEFAULT_TABS, type TabbedContentProps } from "./types";
 import { useTabs } from "../useTabs";
 import CourseCarouselNav from "./CourseCarouselNav";
-import CourseCarouselContent from "./CourseCarouselContent";
+import CourseCarouselContent, { DEFAULT_TABS } from "./CourseCarouselContent";
+import { Course } from "$/schema";
 
-const CourseCarousel: FC<TabbedContentProps> = ({ className }) => {
-  const { isHeb } = useLanguage();
+export interface TabbedContentProps {
+  course: Course;
+  className?: string;
+}
+
+const CourseCarousel: FC<TabbedContentProps> = ({ className, course }) => {
+  const { isRTL, dir } = useLanguage();
+
   const { activeTab, setApi, skipAnimation, handleTabClick, api } =
     useTabs(DEFAULT_TABS);
 
@@ -22,28 +28,30 @@ const CourseCarousel: FC<TabbedContentProps> = ({ className }) => {
 
   return (
     <section className={cn("flex min-h-0 flex-1 flex-col", className)}>
-      <CourseCarouselNav
-        tabs={DEFAULT_TABS}
-        activeTab={activeTab}
-        handleTabClick={handleTabClick}
-      />
-
       <Carousel
         className={cn(
           "flex flex-grow flex-col bg-white dark:bg-gray-800",
-          isHeb && "direction-rtl",
+          isRTL && "direction-rtl",
         )}
-        dir={isHeb ? "rtl" : "ltr"}
+        dir={dir}
         setApi={setApi}
         opts={{
           align: "start",
           loop: false,
           skipSnaps: skipAnimation,
           duration: skipAnimation ? 0 : undefined,
-          direction: isHeb ? "rtl" : "ltr", // Set carousel direction
+          direction: dir, // Set carousel direction
         }}
       >
-        <CourseCarouselContent onContentClick={handleContentClick} />
+        <CourseCarouselNav
+          tabs={DEFAULT_TABS}
+          activeTab={activeTab}
+          handleTabClick={handleTabClick}
+        />
+        <CourseCarouselContent
+          onContentClick={handleContentClick}
+          course={course}
+        />
       </Carousel>
     </section>
   );

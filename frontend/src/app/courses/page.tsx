@@ -11,7 +11,7 @@ interface CoursesPageProps {
 }
 
 const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
-  const { translation } = await getLang(searchParams);
+  const { dir } = await getLang(searchParams);
   const [success, result] = await tryCatch(expressAPI.get("/api/courses"));
   if (!success) {
     console.error(result);
@@ -26,7 +26,7 @@ const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
   const allCourses = result as Course[];
 
   return (
-    <main dir={translation._dir} className="mx-auto max-w-2xl px-4 py-8">
+    <main dir={dir} className="mx-auto max-w-2xl px-4 py-8">
       {allCourses.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}

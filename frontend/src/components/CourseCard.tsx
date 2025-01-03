@@ -7,6 +7,7 @@ import { useLanguage } from "~/app/providers";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Badge } from "./ui/badge";
 import { Course } from "$/schema";
+import { Lang } from "~/utils/language";
 
 interface CourseCardProps {
   course: Course;
@@ -14,11 +15,11 @@ interface CourseCardProps {
 
 const CourseCard: FC<CourseCardProps> = ({ course }) => {
   const router = useRouter();
-  const { lang, isHeb, langParam } = useLanguage();
+  const { lang, isRTL, langParam } = useLanguage();
 
-  const title = lang === "en" ? course.titleEn : course.titleHe;
+  const title = lang === Lang.EN ? course.titleEn : course.titleHe;
   const description =
-    lang === "en" ? course.descriptionEn : course.descriptionHe;
+    lang === Lang.HE ? course.descriptionEn : course.descriptionHe;
   const formattedScore = course.overallScore
     ? Number(course.overallScore).toFixed(1)
     : "N/A";
@@ -42,7 +43,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
   return (
     <Card
-      dir={isHeb ? "rtl" : "ltr"}
+      dir={isRTL ? "rtl" : "ltr"}
       onClick={handleClick}
       className={cn(
         "my-2 transition-colors duration-300",
