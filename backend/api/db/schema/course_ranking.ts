@@ -6,10 +6,10 @@ import {courses} from './courses';
 import {createTable} from './tableCreator';
 import {users} from './users';
 
-export type CourseRanking = InferSelectModel<typeof courseRankings>;
-export type CourseRankingInsert = InferInsertModel<typeof courseRankings>;
+export type CourseRating = InferSelectModel<typeof courseRatings>;
+export type CourseRatingInsert = InferInsertModel<typeof courseRatings>;
 
-export const courseRankings = createTable(
+export const courseRatings = createTable(
     'course_rankings', {
       id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
       courseId: integer('course_id').notNull().references(() => courses.id),
@@ -39,7 +39,7 @@ export const courseRankings = createTable(
 
 
 
-export const zRatingSchema = z.object({
+export const RatingSchema = z.object({
   courseId: z.number().int().positive(),
   userId: z.string(),
   grade: z.number().min(0).max(100).multipleOf(0.01),
@@ -53,4 +53,4 @@ export const zRatingSchema = z.object({
   overallComment: z.string(),
 });
 
-export type RatingPayload = z.infer<typeof zRatingSchema>;
+export type RatingPayload = z.infer<typeof RatingSchema>;

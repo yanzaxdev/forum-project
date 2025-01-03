@@ -4,7 +4,7 @@ import {Request, Response} from 'express';
 import {z} from 'zod';
 
 import {db} from '../db';
-import {CourseRankingInsert, courseRankings, courses, zRatingSchema} from '../db/schema';
+import {CourseRatingInsert, courseRatings, courses, RatingSchema} from '../db/schema';
 
 interface CourseParams {
   id: string;
@@ -56,9 +56,9 @@ export const courseController = {
 
   handleRatingPayload: async(req: Request, res: Response): Promise<void> => {
     try {
-      const payload = zRatingSchema.parse(req.body);
+      const payload = RatingSchema.parse(req.body);
       // When inserting into courseRankings
-      const parsedRating: CourseRankingInsert = {
+      const parsedRating: CourseRatingInsert = {
         userId: payload.userId,
         courseId: parseInt(req.params.id),
         grade: payload.grade.toString(),
@@ -72,7 +72,7 @@ export const courseController = {
         overallComment: payload.overallComment,
 
       };
-      await db.insert(courseRankings).values(parsedRating)
+      await db.insert(courseRatings).values(parsedRating)
 
 
       res.status(200).json({message: 'Rating submitted successfully'});
