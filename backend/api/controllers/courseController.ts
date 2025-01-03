@@ -2,10 +2,9 @@
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
 import {z} from 'zod';
-import {RatingPayload} from '~/types/ranking';
 
 import {db} from '../db';
-import {CourseRanking, courseRankings, courses, zRatingSchema} from '../db/schema';
+import {courseRankings, courses, zRatingSchema} from '../db/schema';
 
 interface CourseParams {
   id: string;

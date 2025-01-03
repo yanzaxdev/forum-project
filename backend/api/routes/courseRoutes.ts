@@ -1,4 +1,5 @@
 // routes/courseRoutes.ts
+import {getAuth} from '@clerk/express';
 import {NextFunction, Request, Response, Router} from 'express';
 
 import {courseController} from '../controllers/courseController';
@@ -33,10 +34,14 @@ courseRouter.get(
 
 courseRouter.post(
     '/courses/:id/rating',
-    async (
-        req: Request<CourseParams, any, RatingPayload>, res: Response,
-        next: NextFunction) => {
+    async (req: Request, res: Response, next: NextFunction) => {
       try {
+        const {userId} = getAuth(req)
+        if (!userId) {
+          res.status(401).json({error: 'Unauthorized'});
+          return;
+        }
+        const payload = ''
         // await courseController.handleRatingPayload(req, res);
       } catch (error) {
         next(error);

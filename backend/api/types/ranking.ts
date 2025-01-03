@@ -4,6 +4,6 @@ export interface RatingPayload {
   interestLevel: number;
   overallScore: number;
   overallComment: string;
-  userID: string
+  userId: string
   courseId: string
 }

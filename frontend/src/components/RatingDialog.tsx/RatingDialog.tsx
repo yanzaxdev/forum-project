@@ -18,9 +18,10 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
-import { RatingPayload } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { RatingPayload } from "$/schema";
+
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -51,7 +52,9 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     mutationFn: async (data: RatingPayload) => {
       const courseId = window.location.pathname.split("/")[2];
       if (!courseId) return;
-      data.courseId = courseId;
+      const numId = parseInt(courseId);
+      if (isNaN(numId)) return;
+      data.courseId = numId;
       const response = await expressAPI.post("/api/courses/rating", data);
       return response;
     },
@@ -198,7 +201,7 @@ export const RankingContext = React.createContext<RatingPayload>({
   interestLevel: 0,
   overallScore: 0,
   overallComment: "",
-  userID: "",
+  userId: "",
   courseId: "",
 });
 

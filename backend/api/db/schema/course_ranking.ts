@@ -1,5 +1,5 @@
 import {InferSelectModel, sql} from 'drizzle-orm';
-import {decimal, index, integer, timestamp, unique} from 'drizzle-orm/pg-core';
+import {decimal, index, integer, text, timestamp, unique} from 'drizzle-orm/pg-core';
 import {z} from 'zod';
 
 import {courses} from './courses';
@@ -17,11 +17,15 @@ export const courseRankings = createTable(
       grade: decimal('grade', {precision: 5, scale: 2}).default(sql`0`),
       examDifficulty:
           decimal('exam_difficulty', {precision: 3, scale: 2}).default(sql`0`),
+      examComment: text('exam_comment').default(sql`''`),
       assignmentDifficulty:
           decimal('assignment_difficulty', {precision: 3, scale: 2})
               .default(sql`0`),
+      assignmentComment: text('assignment_comment').default(sql`''`),
       interestLevel:
           decimal('interest_level', {precision: 3, scale: 2}).default(sql`0`),
+      interestComment: text('interest_comment').default(sql`''`),
+      overAllComment: text('overall_comment').default(sql`''`),
       createdAt: timestamp('created_at', {withTimezone: true})
                      .default(sql`CURRENT_TIMESTAMP`)
                      .notNull(),
@@ -38,6 +42,12 @@ export const zRatingSchema = z.object({
   userId: z.number().int().positive(),
   grade: z.number().min(0).max(100).multipleOf(0.01),
   examDifficulty: z.number().min(0).max(5).multipleOf(0.01),
+  examComment: z.string(),
   assignmentDifficulty: z.number().min(0).max(5).multipleOf(0.01),
-  interestLevel: z.number().min(0).max(5).multipleOf(0.01)
+  assignmentComment: z.string(),
+  interestLevel: z.number().min(0).max(5).multipleOf(0.01),
+  interestComment: z.string(),
+  overAllComment: z.string(),
 });
+
+export type RatingPayload = z.infer<typeof zRatingSchema>;
