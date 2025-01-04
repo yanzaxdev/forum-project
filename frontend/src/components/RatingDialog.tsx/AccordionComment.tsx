@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "~/app/providers";
+import { Button } from "../ui/button";
 
 interface AccordionProps {
   title: string;
@@ -16,7 +17,7 @@ const AccordionComment = ({ title, children }: AccordionProps) => {
 
   return (
     <div className="overflow-hidden rounded-md border" dir={translation._dir}>
-      <button
+      <Button
         className="100 flex w-full min-w-[50px] items-center justify-between bg-gray-800 p-4 text-left transition-colors hover:bg-gray-200 dark:bg-gray-800"
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -27,7 +28,7 @@ const AccordionComment = ({ title, children }: AccordionProps) => {
         >
           <ChevronDown className="h-5 w-5" />
         </motion.span>
-      </button>
+      </Button>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div

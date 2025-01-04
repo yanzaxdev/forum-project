@@ -50,6 +50,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryClient = new QueryClient();
 
   const currentLang = searchParams.get("lang") as Lang;
   const [lang, setLang] = useState<Lang>(currentLang || "he");
