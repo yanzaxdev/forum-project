@@ -15,6 +15,21 @@ backend/.env.development
 backend/dist
 backend/.vscode
 
+# Dependencies
+**/node_modules
+**/dist
+
+# Next.js
+**/.next
+
+# Environment variables
+**/.env*
+
+# IDE
+**/.vscode
+
+.vscode
+
 .vscode
 
 

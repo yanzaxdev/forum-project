@@ -26,6 +26,8 @@ interface RankingDialogProps {
   onComplete?: () => void;
 }
 
+const RATING_STORAGE_KEY = "rating";
+
 export interface RatingCategory {
   name: RatingCategories;
   rating: number;
@@ -117,7 +119,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   );
 
   useEffect(() => {
-    localStorage.setItem("rating", JSON.stringify(rankingContext));
+    localStorage.setItem(RATING_STORAGE_KEY, JSON.stringify(rankingContext));
     const data = localStorage.getItem("rating");
     if (data) {
       const rating = JSON.parse(data) as RankingContextType;
