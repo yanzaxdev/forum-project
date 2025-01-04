@@ -44,37 +44,35 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { lang } = await getLang();
 
   return (
-    <ClerkProvider localization={heIL}>
-      <html
-        lang={lang}
-        suppressHydrationWarning
-        className={cn(FONT_ASSISTANT.className, "antialiased")}
+    <html
+      lang={lang}
+      suppressHydrationWarning
+      className={cn(FONT_ASSISTANT.className, "antialiased")}
+    >
+      <head />
+      <body
+        className={cn(
+          "flex min-h-screen flex-col",
+          "bg-background text-foreground",
+          "transition-colors duration-300",
+        )}
       >
-        <head />
-        <body
-          className={cn(
-            "flex min-h-screen flex-col",
-            "bg-background text-foreground",
-            "transition-colors duration-300",
-          )}
-        >
-          <Suspense fallback={null}>
-            <Providers>
-              <Sheet>
-                <ForumSheet />
-                <Suspense fallback={null}>
-                  <NavBar />
-                </Suspense>
-              </Sheet>
+        <Suspense fallback={null}>
+          <Providers>
+            <Sheet>
+              <ForumSheet />
+              <Suspense fallback={null}>
+                <NavBar />
+              </Suspense>
+            </Sheet>
 
-              <main className="flex flex-1 flex-col">
-                <Suspense fallback={null}>{children}</Suspense>
-              </main>
-            </Providers>
-          </Suspense>
-        </body>
-      </html>
-    </ClerkProvider>
+            <main className="flex flex-1 flex-col">
+              <Suspense fallback={null}>{children}</Suspense>
+            </main>
+          </Providers>
+        </Suspense>
+      </body>
+    </html>
   );
 };
 
