@@ -8,9 +8,6 @@ import NavBar from "~/components/Navbar";
 import { Sheet } from "~/components/ui/sheet";
 import ForumSheet from "~/components/ForumSheet";
 import { getLang } from "~/utils/language";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
 
 const FONT_ASSISTANT = Assistant({
   subsets: ["hebrew"],
@@ -45,37 +42,35 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
   const { lang } = await getLang();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <html
-        lang={lang}
-        suppressHydrationWarning
-        className={cn(FONT_ASSISTANT.className, "antialiased")}
+    <html
+      lang={lang}
+      suppressHydrationWarning
+      className={cn(FONT_ASSISTANT.className, "antialiased")}
+    >
+      <head />
+      <body
+        className={cn(
+          "flex min-h-screen flex-col",
+          "bg-background text-foreground",
+          "transition-colors duration-300",
+        )}
       >
-        <head />
-        <body
-          className={cn(
-            "flex min-h-screen flex-col",
-            "bg-background text-foreground",
-            "transition-colors duration-300",
-          )}
-        >
-          <Suspense fallback={null}>
-            <Providers>
-              <Sheet>
-                <ForumSheet />
-                <Suspense fallback={null}>
-                  <NavBar />
-                </Suspense>
-              </Sheet>
+        <Suspense fallback={null}>
+          <Providers>
+            <Sheet>
+              <ForumSheet />
+              <Suspense fallback={null}>
+                <NavBar />
+              </Suspense>
+            </Sheet>
 
-              <main className="flex flex-1 flex-col">
-                <Suspense fallback={null}>{children}</Suspense>
-              </main>
-            </Providers>
-          </Suspense>
-        </body>
-      </html>
-    </QueryClientProvider>
+            <main className="flex flex-1 flex-col">
+              <Suspense fallback={null}>{children}</Suspense>
+            </main>
+          </Providers>
+        </Suspense>
+      </body>
+    </html>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, {
@@ -16,6 +17,7 @@ export enum Dir {
   LTR = "ltr",
   RTL = "rtl",
 }
+
 interface LanguageContextType {
   lang: Lang;
   isRTL: boolean;
@@ -46,6 +48,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryClient = new QueryClient();
 
   const currentLang = searchParams.get("lang") as Lang;
   const [lang, setLang] = useState<Lang>(currentLang || "he");
@@ -80,11 +83,13 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <LanguageContext.Provider value={contextValue}>
-        {children}
-      </LanguageContext.Provider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <LanguageContext.Provider value={contextValue}>
+          {children}
+        </LanguageContext.Provider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 };
 
