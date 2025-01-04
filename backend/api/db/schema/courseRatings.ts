@@ -15,15 +15,18 @@ export const courseRatings = createTable(
                     .notNull()
                     .references(() => courses.id),
       userId: text('user_id').notNull().references(() => users.id),
-      grade: decimal('grade', {precision: 5, scale: 2}),
-      examDifficulty: decimal('exam_difficulty', {precision: 3, scale: 2}),
+      grade: decimal('grade', {precision: 5, scale: 2}).notNull(),
+      examDifficulty:
+          decimal('exam_difficulty', {precision: 3, scale: 2}).notNull(),
       examComment: text('exam_comment').default(sql`''`),
       assignmentDifficulty:
-          decimal('assignment_difficulty', {precision: 3, scale: 2}),
+          decimal('assignment_difficulty', {precision: 3, scale: 2}).notNull(),
       assignmentComment: text('assignment_comment').default(sql`''`),
-      interestLevel: decimal('interest_level', {precision: 3, scale: 2}),
+      interestLevel:
+          decimal('interest_level', {precision: 3, scale: 2}).notNull(),
       interestComment: text('interest_comment').default(sql`''`),
-      overallScore: decimal('overall_score', {precision: 3, scale: 2}),
+      overallScore:
+          decimal('overall_score', {precision: 3, scale: 2}).notNull(),
       overallComment: text('overall_comment').default(sql`''`),
       createdAt: timestamp('created_at', {withTimezone: true})
                      .default(sql`CURRENT_TIMESTAMP`)
@@ -40,14 +43,14 @@ export const courseRatings = createTable(
 export const CourseRatingSchema = z.object({
   courseId: z.string().max(50),
   userId: z.string(),
-  grade: z.number().multipleOf(0.01).min(0).max(999.99).optional(),
-  examDifficulty: z.number().multipleOf(0.01).min(0).max(9.99).optional(),
+  grade: z.number().multipleOf(0.01).min(0).max(100),
+  examDifficulty: z.number().multipleOf(0.01).min(0).max(10),
   examComment: z.string().default(''),
-  assignmentDifficulty: z.number().multipleOf(0.01).min(0).max(9.99).optional(),
+  assignmentDifficulty: z.number().multipleOf(0.01).min(0).max(10),
   assignmentComment: z.string().default(''),
-  interestLevel: z.number().multipleOf(0.01).min(0).max(9.99).optional(),
+  interestLevel: z.number().multipleOf(0.01).min(0).max(10),
   interestComment: z.string().default(''),
-  overallScore: z.number().multipleOf(0.01).min(0).max(9.99).optional(),
+  overallScore: z.number().multipleOf(0.01).min(0).max(10),
   overallComment: z.string().default(''),
   createdAt: z.date().default(() => new Date())
 });

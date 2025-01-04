@@ -4,7 +4,7 @@ import {Request, Response} from 'express';
 import {z} from 'zod';
 
 import {db} from '../db';
-import {CourseRatingInsert, courseRatings, courses, RatingSchema} from '../db/schema';
+import {CourseRatingInsert, courseRatings, CourseRatingSchema, courses,} from '../db/schema';
 
 interface CourseParams {
   id: string;
@@ -27,12 +27,7 @@ export const courseController = {
   getCourseById: async(req: Request<CourseParams>, res: Response):
       Promise<void> => {
         try {
-          const courseId = parseInt(req.params.id);
-
-          if (isNaN(courseId)) {
-            res.status(400).json({error: 'Invalid course ID'});
-            return;
-          }
+          const courseId = req.params.id;
 
           const course = await db.select()
                              .from(courses)
@@ -56,12 +51,12 @@ export const courseController = {
 
   handleRatingPayload: async(req: Request, res: Response): Promise<void> => {
     try {
-      const payload = RatingSchema.parse(req.body);
+      const payload = CourseRatingSchema.parse(req.body);
 
       // When inserting into courseRankings
       const parsedRating: CourseRatingInsert = {
         userId: payload.userId,
-        courseId: parseInt(req.params.id),
+        courseId: payload.courseId,
         grade: payload.grade.toString(),
         examDifficulty: payload.examDifficulty.toString(),
         examComment: payload.examComment,

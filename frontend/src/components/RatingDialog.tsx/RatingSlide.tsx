@@ -25,7 +25,7 @@ interface RatingSlideProps {
 export function RatingSlide({ category, api }: RatingSlideProps) {
   const { name, rating: initRating, comment: initComment } = category;
   const { translation, dir } = useLanguage();
-  const [rating, setRating] = useState<number>(initRating ?? 0);
+  const [rating, setRating] = useState<string>(initRating ?? "0");
   const [comment, setComment] = useState<string>(initComment ?? "");
 
   const ctx = useContext(RatingContext);
@@ -50,7 +50,7 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
     localStorage.setItem("rating", JSON.stringify(ctx));
   }, [rating, comment, ctx]);
 
-  const handleStarClick = (starIndex: number) => {
+  const handleStarClick = (starIndex: string) => {
     setRating(starIndex);
     if (!api) return;
     setTimeout(() => {
@@ -63,17 +63,17 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
       <div className="flex flex-col items-center justify-center gap-6">
         <h2 className="text-center text-lg font-medium">{translation[name]}</h2>
         <div className="flex flex-col items-center justify-center gap-2">
-          {rating > 0 && (
+          {Number(rating) > 0 && (
             <div className="text-sm text-gray-500">{rating}/5</div>
           )}
           <div className="inline-flex items-center gap-2">
             {[1, 2, 3, 4, 5].map((starIndex) => (
               <Star
                 key={starIndex}
-                onClick={() => handleStarClick(starIndex)}
+                onClick={() => handleStarClick(starIndex.toString())}
                 className={cn(
                   "h-8 w-8 cursor-pointer transition-all hover:scale-110 md:h-10 md:w-10",
-                  starIndex <= rating
+                  starIndex <= Number(rating)
                     ? "fill-yellow-400 text-yellow-400"
                     : "text-yellow-400 hover:fill-yellow-200",
                 )}

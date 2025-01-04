@@ -20,7 +20,7 @@ import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
 import { SignIn, useUser } from "@clerk/nextjs";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { RatingPayload } from "$/schema";
+import { CourseRatingInsert } from "$/schema";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -30,14 +30,14 @@ interface RankingDialogProps {
 
 export interface RatingCategory {
   name: RatingCategories;
-  rating: number;
+  rating: string;
   comment?: string;
 }
 const CATEGORIES: RatingCategory[] = [
-  { name: "examDifficulty", rating: 0, comment: "" },
-  { name: "assignmentDifficulty", rating: 0, comment: "" },
-  { name: "interestLevel", rating: 0, comment: "" },
-  { name: "overallScore", rating: 0, comment: "" },
+  { name: "examDifficulty", rating: "0", comment: "" },
+  { name: "assignmentDifficulty", rating: "0", comment: "" },
+  { name: "interestLevel", rating: "0", comment: "" },
+  { name: "overallScore", rating: "", comment: "" },
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
@@ -49,12 +49,10 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const submitRating = useMutation({
-    mutationFn: async (data: RatingPayload) => {
+    mutationFn: async (data: CourseRatingInsert) => {
       const courseId = window.location.pathname.split("/")[2];
       if (!courseId) return;
-      const numId = parseInt(courseId);
-      if (isNaN(numId)) return;
-      data.courseId = numId;
+      data.courseId = courseId;
       const response = await expressAPI.post("/api/courses/rating", data);
       return response;
     },
@@ -93,11 +91,6 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   };
 
   const onSubmit = async () => {
-    if (!isValid(rankingContext)) {
-      alert("Please fill in all fields");
-      return;
-    }
-
     if (user.isSignedIn) {
       submitRating.mutate(rankingContext);
     }
@@ -111,18 +104,18 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
-  const rankingContext: RatingPayload = React.useMemo(
+  const rankingContext: CourseRatingInsert = React.useMemo(
     () => ({
       userId: user.isSignedIn ? user.user.id : "",
-      examDifficulty: 0,
-      grade: 0,
-      courseId: 0,
+      examDifficulty: "0",
+      grade: "0",
+      courseId: "0",
       examComment: "",
-      assignmentDifficulty: 0,
+      assignmentDifficulty: "0",
       assignmentComment: "",
-      interestLevel: 0,
+      interestLevel: "0",
       interestComment: "",
-      overallScore: 0,
+      overallScore: "0",
       overallComment: "",
     }),
     [user.isSignedIn, user.user],
@@ -132,7 +125,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     localStorage.setItem("rating", JSON.stringify(rankingContext));
     const data = localStorage.getItem("rating");
     if (data) {
-      const rating = JSON.parse(data) as RatingPayload;
+      const rating = JSON.parse(data) as CourseRatingInsert;
       rankingContext.examDifficulty = rating.examDifficulty;
       rankingContext.assignmentDifficulty = rating.assignmentDifficulty;
       rankingContext.interestLevel = rating.interestLevel;
@@ -199,26 +192,16 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
 export default RatingDialog;
 
-export const RankingContext = React.createContext<RatingPayload>({
-  courseId: 0,
+export const RankingContext = React.createContext<CourseRatingInsert>({
+  courseId: "",
   userId: "",
-  grade: 0,
-  examDifficulty: 0,
+  grade: "",
+  examDifficulty: "",
   examComment: "",
-  assignmentDifficulty: 0,
+  assignmentDifficulty: "",
   assignmentComment: "",
-  interestLevel: 0,
+  interestLevel: "",
   interestComment: "",
-  overallScore: 0,
+  overallScore: "",
   overallComment: "",
 });
-
-function isValid(context: RatingPayload) {
-  return (
-    context.examDifficulty > 0 &&
-    context.assignmentDifficulty > 0 &&
-    context.interestLevel > 0 &&
-    context.overallScore > 0 &&
-    context.overallComment !== ""
-  );
-}

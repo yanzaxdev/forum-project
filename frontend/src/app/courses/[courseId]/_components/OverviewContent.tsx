@@ -3,10 +3,10 @@
 import { Course } from "$/schema";
 import { FC, useState } from "react";
 import { useLanguage } from "~/app/providers";
+import RatingDialog from "~/components/RatingDialog.tsx/RatingDialog";
 import { H1, P } from "~/components/Typography";
 import { Button } from "~/components/ui/button";
 import { CarouselItem } from "~/components/ui/carousel";
-import RatingDialog from "~/components/RatingDialog.tsx/RatingDialog";
 import { cn } from "~/lib/utils";
 
 interface Props {
@@ -18,11 +18,11 @@ const OverviewContent: FC<Props> = ({ course }) => {
   const [isRankingOpen, setIsRankingOpen] = useState(false);
   /* ----- State -----*/
   const {
+    id,
     titleEn,
     titleHe,
     descriptionEn,
     descriptionHe,
-    courseNumber,
     level,
     creditPoints,
     department,
@@ -57,7 +57,7 @@ const OverviewContent: FC<Props> = ({ course }) => {
       </P>
       <div className="grid grid-cols-2 gap-4">
         <P className="text-gray-600 dark:text-gray-400">
-          <strong>{translation.courseNumber}:</strong> {courseNumber}
+          <strong>{translation.courseNumber}:</strong> {id}
         </P>
         <P className="text-gray-600 dark:text-gray-400">
           <strong>{translation.level}:</strong> {level}
