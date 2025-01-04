@@ -13,6 +13,18 @@ function cleanText(text: string): string {
       .trim();
 }
 
+function cleanTitle(title: string): string {
+  return title
+      .replace(/^\d+\s/, '')  // Remove course number from start
+      .replace(/1$/, '')      // Remove trailing "1"
+      .replace(
+          /[\u200e\u200f\u202a-\u202e]/g,
+          '')                // Remove direction formatting chars
+      .replace(/‏/g, '')   // Remove special characters
+      .replace(/\s+/g, ' ')  // Normalize spaces
+      .trim();
+}
+
 export async function parseCourseHtml(htmlContent: string):
     Promise<CourseParseResult> {
   try {
@@ -28,9 +40,9 @@ export async function parseCourseHtml(htmlContent: string):
     }
 
     const id = idMatch[1];
-    const titleHe = cleanText(fullTitle.replace(/^\d+\s/, ''));
+    const titleHe = cleanTitle(fullTitle);  // Using the new cleanTitle function
 
-    // Extract credit points and level
+    // Rest of the code remains the same
     const creditPointsText = $('p:contains("נקודות זכות")').first().text();
     const creditPointsMatch =
         creditPointsText.match(/(\d+)\s*נקודות\s*זכות/);

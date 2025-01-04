@@ -26,7 +26,7 @@ async function main() {
 
       // Save multiple courses result
       await fs.writeFile(
-          path.join(__dirname, '../data/workshops-courses.json'),
+          path.join(__dirname, `../data/${category}-courses.json`),
           JSON.stringify(result.data, null, 2), 'utf-8');
       console.log('Successfully scraped and saved all courses');
     } else {
