@@ -29,4 +29,5 @@ courseRouter.get(
       }
     });
 
+
 export default courseRouter;
