@@ -1,21 +1,20 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CarouselItem } from "../ui/carousel";
 import { useLanguage } from "~/app/providers";
 import { Star } from "lucide-react";
 import { CarouselApi } from "~/components/ui/carousel";
 import { cn } from "~/lib/utils";
-import {
-  RatingCategory,
-  RankingContext as RatingContext,
-} from "./RatingDialog";
+import { RatingCategory } from "./RatingDialog";
+import { useRating } from "./RatingProvider";
 
-export type RatingCategories =
-  | "examDifficulty"
-  | "assignmentDifficulty"
-  | "interestLevel"
-  | "overallScore";
+export enum RatingCategories {
+  examDifficulty = "examDifficulty",
+  assignmentDifficulty = "assignmentDifficulty",
+  interestLevel = "interestLevel",
+  overallScore = "overallScore",
+}
 
 interface RatingSlideProps {
   category: RatingCategory;
@@ -28,23 +27,7 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
   const [rating, setRating] = useState<number>(initRating ?? 0);
   const [comment, setComment] = useState<string>(initComment ?? "");
 
-  const ctx = useContext(RatingContext);
-
-  useEffect(() => {
-    if (name === "assignmentDifficulty") {
-      ctx.assignmentDifficulty = rating;
-    }
-    if (name === "examDifficulty") {
-      ctx.examDifficulty = rating;
-    }
-    if (name === "interestLevel") {
-      ctx.interestLevel = rating;
-    }
-    if (name === "overallScore") {
-      ctx.overallScore = rating;
-      ctx.overallComment = comment;
-    }
-  });
+  const { ratingState: ctx, setRatingContext } = useRating();
 
   useEffect(() => {
     localStorage.setItem("rating", JSON.stringify(ctx));
@@ -52,6 +35,20 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
 
   const handleStarClick = (starIndex: number) => {
     setRating(starIndex);
+    if (name === RatingCategories.examDifficulty) {
+      ctx.assignmentDifficulty = rating;
+    }
+    if (name === RatingCategories.assignmentDifficulty) {
+      ctx.examDifficulty = rating;
+    }
+    if (name === RatingCategories.interestLevel) {
+      ctx.interestLevel = rating;
+    }
+    if (name === RatingCategories.overallScore) {
+      ctx.overallScore = rating;
+      ctx.overallComment = comment;
+    }
+    setRatingContext(ctx);
     if (!api) return;
     setTimeout(() => {
       api.scrollNext();
@@ -81,7 +78,7 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
             ))}
           </div>
         </div>
-        {name === "overallScore" && (
+        {name === RatingCategories.overallScore && (
           <textarea
             dir={dir}
             onChange={(e) => setComment(e.target.value)}

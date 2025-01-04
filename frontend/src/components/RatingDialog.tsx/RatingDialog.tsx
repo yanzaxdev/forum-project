@@ -18,16 +18,14 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
-import { RankingContextType } from "$/ranking";
+import { RatingContextType } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
-import { useLocalStorage } from "@uidotdev/usehooks";
+import { RatingProvider } from "./RatingProvider";
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onComplete?: () => void;
 }
-
-const RATING_STORAGE_KEY = "rating";
 
 export interface RatingCategory {
   name: RatingCategories;
@@ -35,10 +33,10 @@ export interface RatingCategory {
   comment?: string;
 }
 const CATEGORIES: RatingCategory[] = [
-  { name: "examDifficulty", rating: 0, comment: "" },
-  { name: "assignmentDifficulty", rating: 0, comment: "" },
-  { name: "interestLevel", rating: 0, comment: "" },
-  { name: "overallScore", rating: 0, comment: "" },
+  { name: RatingCategories.assignmentDifficulty, rating: 0, comment: "" },
+  { name: RatingCategories.examDifficulty, rating: 0, comment: "" },
+  { name: RatingCategories.interestLevel, rating: 0, comment: "" },
+  { name: RatingCategories.overallScore, rating: 0, comment: "" },
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
@@ -48,10 +46,9 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [count, setCount] = useState(0);
   const user = useUser();
   const [showSignIn, setShowSignIn] = useState(false);
-  const [] = useLocalStorage(RATING_STORAGE_KEY, RankingContext);
 
   const submitRating = useMutation({
-    mutationFn: async (data: RankingContextType) => {
+    mutationFn: async (data: RatingContextType) => {
       const response = await expressAPI.post("/api/rating", data);
       return response;
     },
@@ -90,13 +87,8 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   };
 
   const onSubmit = async () => {
-    if (!isValid(rankingContext)) {
-      alert("Please fill in all fields");
-      return;
-    }
-
     if (user.isSignedIn) {
-      submitRating.mutate(rankingContext);
+      submitRating.mutate(ratingContext);
     }
     if (!user.isSignedIn) {
       setShowSignIn(true);
@@ -108,7 +100,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
-  const rankingContext: RankingContextType = React.useMemo(
+  const ratingContext: RatingContextType = React.useMemo(
     () => ({
       examDifficulty: 0,
       assignmentDifficulty: 0,
@@ -120,21 +112,8 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
     [user.isSignedIn, user.user],
   );
 
-  useEffect(() => {
-    localStorage.setItem(RATING_STORAGE_KEY, JSON.stringify(rankingContext));
-    const data = localStorage.getItem("rating");
-    if (data) {
-      const rating = JSON.parse(data) as RankingContextType;
-      rankingContext.examDifficulty = rating.examDifficulty;
-      rankingContext.assignmentDifficulty = rating.assignmentDifficulty;
-      rankingContext.interestLevel = rating.interestLevel;
-      rankingContext.overallScore = rating.overallScore;
-      rankingContext.overallComment = rating.overallComment;
-    }
-  }, [rankingContext]);
-
   return (
-    <RankingContext.Provider value={rankingContext}>
+    <RatingProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="flex h-[70vh] w-[90vw] flex-col p-8 md:h-[400px] md:w-[500px]">
           <DialogHeader>
@@ -184,27 +163,8 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </RankingContext.Provider>
+    </RatingProvider>
   );
 };
 
 export default RatingDialog;
-
-export const RankingContext = React.createContext<RankingContextType>({
-  examDifficulty: 0,
-  assignmentDifficulty: 0,
-  interestLevel: 0,
-  overallScore: 0,
-  overallComment: "",
-  userID: "",
-});
-
-function isValid(context: RankingContextType) {
-  return (
-    context.examDifficulty > 0 &&
-    context.assignmentDifficulty > 0 &&
-    context.interestLevel > 0 &&
-    context.overallScore > 0 &&
-    context.overallComment !== ""
-  );
-}
