@@ -10,9 +10,11 @@ dotenv.config();
 const app = express();
 
 
+
+app.use(express.json());
 app.use(clerkMiddleware())
 app.use(cors({origin: process.env.CORS_ORIGIN}));
-app.use('/api', courseRouter);  // This will prefix all routes with /api
+app.use('/api', courseRouter);
 
 app.get('/', (req, res) => {
   res.json({message: 'Server is running'});
@@ -20,6 +22,7 @@ app.get('/', (req, res) => {
 app.get('/api/test', (req, res) => {
   res.json({message: 'Hello world'});
 });
+
 
 
 if (process.env.CORS_ORIGIN === 'http://localhost:3000') {

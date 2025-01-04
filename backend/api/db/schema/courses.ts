@@ -1,5 +1,6 @@
 import {InferSelectModel, sql} from 'drizzle-orm';
-import {decimal, index, integer, text, timestamp, varchar} from 'drizzle-orm/pg-core';
+import {decimal, index, text, timestamp, varchar} from 'drizzle-orm/pg-core';
+import {z} from 'zod';
 
 import {createTable} from './tableCreator';
 
@@ -8,7 +9,7 @@ export type CourseInsert = Omit<Course, 'id'>;
 
 export const courses = createTable(
     'courses', {
-      id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
+      id: varchar('id', {length: 50}).primaryKey().notNull().default('00000'),
       titleEn: varchar('title_en', {length: 256}).notNull(),
       titleHe: varchar('title_he', {length: 256}).notNull(),
       descriptionEn: text('description_en').notNull(),
@@ -17,11 +18,8 @@ export const courses = createTable(
                      .default(sql`CURRENT_TIMESTAMP`)
                      .notNull(),
 
-      courseNumber: varchar('course_number', {length: 50})
-                        .notNull()
-                        .default('00000')
-                        .unique(),
-      level: varchar('level', {length: 50}).notNull().default('beginner'),
+
+      level: varchar('level', {length: 50}).notNull(),
       creditPoints: decimal('credit_points', {precision: 4, scale: 2})
                         .notNull()
                         .default(sql`0`),
@@ -42,6 +40,28 @@ export const courses = createTable(
     (course) => [  // Changed from object to array
         index('course_title_en_idx').on(course.titleEn),
         index('course_title_he_idx').on(course.titleHe),
-        index('course_number_idx').on(course.courseNumber),
+        index('course_number_idx').on(course.id),
         index('course_department_idx').on(course.department),
 ]);
+
+
+export const CourseSchema = z.object({
+  id: z.string().max(50).default('00000'),
+  titleEn: z.string().max(256),
+  titleHe: z.string().max(256),
+  descriptionEn: z.string(),
+  descriptionHe: z.string(),
+  createdAt: z.date(),
+
+  level: z.string().max(50),
+  creditPoints: z.number().multipleOf(0.01).min(0).max(99.99),
+  department: z.string().max(256).optional(),
+
+  gradeAverage: z.number().multipleOf(0.01).min(0).max(999.99).default(0),
+  examDifficulty: z.number().multipleOf(0.01).min(0).max(9.99).default(0),
+  assignmentDifficulty: z.number().multipleOf(0.01).min(0).max(9.99).default(0),
+  interestLevel: z.number().multipleOf(0.01).min(0).max(9.99).default(0),
+  overallScore: z.number().multipleOf(0.01).min(0).max(999.99).default(0),
+});
+
+export type CourseSchema = z.infer<typeof CourseSchema>;

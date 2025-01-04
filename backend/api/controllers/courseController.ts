@@ -57,6 +57,7 @@ export const courseController = {
   handleRatingPayload: async(req: Request, res: Response): Promise<void> => {
     try {
       const payload = RatingSchema.parse(req.body);
+
       // When inserting into courseRankings
       const parsedRating: CourseRatingInsert = {
         userId: payload.userId,
@@ -73,9 +74,7 @@ export const courseController = {
 
       };
       await db.insert(courseRatings).values(parsedRating)
-
-
-      res.status(200).json({message: 'Rating submitted successfully'});
+      res.status(201).json({message: 'Rating submitted successfully'});
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json(
