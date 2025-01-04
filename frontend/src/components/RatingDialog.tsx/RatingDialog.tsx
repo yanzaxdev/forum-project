@@ -20,6 +20,7 @@ import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
 import { RankingContextType } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
+import { useLocalStorage } from "@uidotdev/usehooks";
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -47,6 +48,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [count, setCount] = useState(0);
   const user = useUser();
   const [showSignIn, setShowSignIn] = useState(false);
+  const [] = useLocalStorage(RATING_STORAGE_KEY, RankingContext);
 
   const submitRating = useMutation({
     mutationFn: async (data: RankingContextType) => {
