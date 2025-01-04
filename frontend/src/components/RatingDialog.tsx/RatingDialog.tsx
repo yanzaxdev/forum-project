@@ -18,6 +18,7 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
+import { RankingContextType } from "$/ranking";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -153,13 +154,6 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 
 export default RatingDialog;
 
-export interface RankingContextType {
-  examDifficulty: number;
-  assignmentDifficulty: number;
-  interestLevel: number;
-  overallScore: number;
-  overallComment: string;
-}
 export const RankingContext = React.createContext<RankingContextType>({
   examDifficulty: 0,
   assignmentDifficulty: 0,
