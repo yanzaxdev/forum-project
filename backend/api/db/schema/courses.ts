@@ -36,6 +36,18 @@ export const courses = createTable(
           decimal('interest_level', {precision: 3, scale: 2}).default(sql`0`),
       overallScore:
           decimal('overall_score', {precision: 5, scale: 2}).default(sql`0`),
+      topicsHe: varchar('topics', {length: 256})
+                    .array()
+                    .default(sql`ARRAY[]::varchar[]`),
+      topicsEn: varchar('topics', {length: 256})
+                    .array()
+                    .default(sql`ARRAY[]::varchar[]`),
+      prerequisitesEn: varchar('topics', {length: 256})
+                           .array()
+                           .default(sql`ARRAY[]::varchar[]`),
+      prerequisitesHe: varchar('topics', {length: 256})
+                           .array()
+                           .default(sql`ARRAY[]::varchar[]`)
     },
     (course) => [  // Changed from object to array
         index('course_title_en_idx').on(course.titleEn),

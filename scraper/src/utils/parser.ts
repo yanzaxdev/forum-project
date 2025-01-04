@@ -1,6 +1,17 @@
 import {load} from 'cheerio';
+import iconv from 'iconv-lite';
 
 import {Course, CourseParseResult} from '../types';
+
+function cleanText(text: string): string {
+  return text
+      .replace(
+          /[\u200e\u200f\u202a-\u202e]/g,
+          '')                       // Remove direction formatting chars
+      .replace(/\s+/g, ' ')         // Normalize spaces
+      .replace(/[^\S\r\n]+/g, ' ')  // Replace multiple spaces with single space
+      .trim();
+}
 
 export async function parseCourseHtml(htmlContent: string):
     Promise<CourseParseResult> {
@@ -9,7 +20,7 @@ export async function parseCourseHtml(htmlContent: string):
 
     // Extract course ID and Hebrew title
     const titleElement = $('h1#course_title').first();
-    const fullTitle = titleElement.text().trim();
+    const fullTitle = titleElement.text();
     const idMatch = fullTitle.match(/^(\d+)/);
 
     if (!idMatch) {
@@ -17,49 +28,65 @@ export async function parseCourseHtml(htmlContent: string):
     }
 
     const id = idMatch[1];
-    const titleHe = fullTitle.replace(/^\d+\s/, '').replace(/‏/g, '').trim();
+    const titleHe = cleanText(fullTitle.replace(/^\d+\s/, ''));
 
-    // Extract credit points
-    const creditText = $('p:contains("נקודות זכות")').first().text();
-    const creditMatch = creditText.match(/(\d+)/);
-    const creditPoints = creditMatch ? parseInt(creditMatch[1]) : 0;
+    // Extract credit points and level
+    const creditPointsText = $('p:contains("נקודות זכות")').first().text();
+    const creditPointsMatch =
+        creditPointsText.match(/(\d+)\s*נקודות\s*זכות/);
+    const creditPoints = creditPointsMatch ? parseInt(creditPointsMatch[1]) : 0;
 
     // Extract level
-    const levelText = creditText.includes('רגילה') ? 'רגיל' :
-        creditText.includes('מתקדמת')              ? 'מתקדם' :
-        creditText.includes('מתקדם סמינריוני') ? 'מתקדם סמינריוני' :
-                                                 'רגיל';
+    const levelText = creditPointsText.includes('רגילה') ? 'רגיל' :
+        creditPointsText.includes('מתקדמת')              ? 'מתקדם' :
+        creditPointsText.includes('מתקדם סמינריוני') ? 'מתקדם סמינריוני' :
+                                                       'רגיל';
 
-    // Extract department
-    const departmentText = $('p:contains("שיוך:")').first().text();
-    const department = departmentText.replace('שיוך:', '').trim();
+    // Extract department/שיוך
+    const departmentElement = $('p:contains("שיוך:")').first();
+    const department = cleanText(departmentElement.text().replace('שיוך:', ''));
 
-    // Extract description
-    const description = $('p:contains("מטרת הקורס")').first().text().trim();
+    // Extract course description
+    const descriptionText = $('p')
+                                .filter(function() {
+                                  return $(this).text().includes('מטרת הקורס');
+                                })
+                                .text();
+    const description = cleanText(descriptionText);
 
-    // Extract topics
+    // Extract topics (under נושאי הלימוד)
     const topics: string[] = [];
     $('ul li.bullets').each((_, elem) => {
-      const topic = $(elem).text().trim();
-      if (topic) topics.push(topic);
+      const topic = cleanText($(elem).text());
+      if (topic && !topic.includes('נושאי הלימוד')) {
+        topics.push(topic);
+      }
     });
 
     // Extract prerequisites
     const prerequisites: string[] = [];
     $('p:contains("ידע קודם")').each((_, elem) => {
-      const prereq = $(elem).text().trim();
-      if (prereq) prerequisites.push(prereq);
+      const prereqText = cleanText($(elem).text());
+      if (prereqText && !prereqText.includes('לא נדרש ידע קודם')) {
+        prerequisites.push(prereqText);
+      }
     });
+
+    // Get development team
+    const developmentTeam = cleanText($('p:contains("פיתוח הקורס:")').text());
+    const advisors = cleanText($('p:contains("יועצים:")').text());
 
     const courseData: Course = {
       id,
       titleHe,
       creditPoints,
-      level: levelText,  // Changed from level to levelText
+      level: levelText,
       department,
       descriptionHe: description,
       topics,
-      prerequisites
+      prerequisites,
+      developmentTeam: developmentTeam.replace('פיתוח הקורס:', '').trim(),
+      advisors: advisors.replace('יועצים:', '').trim()
     };
 
     return {success: true, course: courseData};

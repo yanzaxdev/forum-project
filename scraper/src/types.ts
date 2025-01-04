@@ -7,6 +7,8 @@ export interface Course {
   descriptionHe: string;
   topics: string[];
   prerequisites: string[];
+  developmentTeam: string;
+  advisors: string;
 }
 
 export type CourseParseResult = {
