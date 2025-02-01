@@ -1,19 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-frontend/.next/
-frontend/node_modules
-frontend/.env
-frontend/.env.local
-frontend/.env.development
-frontend/dist
-frontend/.vscode
+# Dependencies
+**/node_modules
+**/dist
 
-backend/node_modules
-backend/.env
-backend/.env.local
-backend/.env.development
-backend/dist
-backend/.vscode
+# Next.js
+**/.next
+
+# Environment variables
+**/.env*
+
+# IDE
+**/.vscode
 
 # Dependencies
 **/node_modules

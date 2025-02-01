@@ -21,6 +21,8 @@ import { useMutation } from "@tanstack/react-query";
 import { RatingContextType } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
 import { RatingProvider } from "./RatingProvider";
+import { DialogDescription } from "@radix-ui/react-dialog";
+
 interface RankingDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,14 +31,14 @@ interface RankingDialogProps {
 
 export interface RatingCategory {
   name: RatingCategories;
-  rating: number;
+  rating: string;
   comment?: string;
 }
 const CATEGORIES: RatingCategory[] = [
-  { name: RatingCategories.assignmentDifficulty, rating: 0, comment: "" },
-  { name: RatingCategories.examDifficulty, rating: 0, comment: "" },
-  { name: RatingCategories.interestLevel, rating: 0, comment: "" },
-  { name: RatingCategories.overallScore, rating: 0, comment: "" },
+  { name: RatingCategories.assignmentDifficulty, rating: "0", comment: "" },
+  { name: RatingCategories.examDifficulty, rating: "0", comment: "" },
+  { name: RatingCategories.interestLevel, rating: "0", comment: "" },
+  { name: RatingCategories.overallScore, rating: "0", comment: "" },
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
@@ -118,6 +120,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
         <DialogContent className="flex h-[70vh] w-[90vw] flex-col p-8 md:h-[400px] md:w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-center">{}</DialogTitle>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
           {showSignIn && <SignIn />}
           <Carousel
