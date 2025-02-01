@@ -2,7 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { createContext, useContext } from "react";
 
 // Type definitions
-export interface RankingContextType {
+export interface RatingContextType {
   examDifficulty: number;
   assignmentDifficulty: number;
   interestLevel: number;
@@ -11,15 +11,13 @@ export interface RankingContextType {
 }
 
 export interface RatingContextValue {
-  ratingState: RankingContextType;
+  ratingState: RatingContextType;
   setRatingContext: (
-    value:
-      | RankingContextType
-      | ((prev: RankingContextType) => RankingContextType),
+    value: RatingContextType | ((prev: RatingContextType) => RatingContextType),
   ) => void;
 }
 
-const INITIAL_RANKING_STATE: RankingContextType = {
+const INITIAL_RANKING_STATE: RatingContextType = {
   examDifficulty: 0,
   assignmentDifficulty: 0,
   interestLevel: 0,
@@ -36,7 +34,7 @@ const RatingContext = createContext<RatingContextValue | undefined>(undefined);
 export const RatingProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [ratingState, setRatingContext] = useLocalStorage<RankingContextType>(
+  const [ratingState, setRatingContext] = useLocalStorage<RatingContextType>(
     RATING_STORAGE_KEY,
     INITIAL_RANKING_STATE,
   );
