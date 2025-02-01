@@ -1,5 +1,4 @@
 import {load} from 'cheerio';
-import iconv from 'iconv-lite';
 
 import {Course, CourseParseResult} from '../types';
 
@@ -40,19 +39,35 @@ export async function parseCourseHtml(htmlContent: string):
     }
 
     const id = idMatch[1];
-    const titleHe = cleanTitle(fullTitle);  // Using the new cleanTitle function
+    const titleHe = cleanTitle(fullTitle);
 
-    // Rest of the code remains the same
-    const creditPointsText = $('p:contains("נקודות זכות")').first().text();
-    const creditPointsMatch =
-        creditPointsText.match(/(\d+)\s*נקודות\s*זכות/);
-    const creditPoints = creditPointsMatch ? parseInt(creditPointsMatch[1]) : 0;
+    // Extract credit points - improved selector and parsing
+    let creditPoints = 0;
+    $('p strong').each((_, elem) => {
+      const text = $(elem).text();
+      if (text.includes('נקודות זכות')) {
+        const match = text.match(/(\d+)\s*נקודות\s*זכות/);
+        if (match) {
+          creditPoints = parseInt(match[1], 10);
+          return false;  // Break the each loop
+        }
+      }
+    });
 
-    // Extract level
-    const levelText = creditPointsText.includes('רגילה') ? 'רגיל' :
-        creditPointsText.includes('מתקדמת')              ? 'מתקדם' :
-        creditPointsText.includes('מתקדם סמינריוני') ? 'מתקדם סמינריוני' :
-                                                       'רגיל';
+    // Extract level using the same element that had credit points
+    let levelText = 'רגיל';
+    $('p strong').each((_, elem) => {
+      const text = $(elem).text();
+      if (text.includes('נקודות זכות')) {
+        if (text.includes('רגילה'))
+          levelText = 'רגיל';
+        else if (text.includes('מתקדם סמינריוני'))
+          levelText = 'מתקדם סמינריוני';
+        else if (text.includes('מתקדמת'))
+          levelText = 'מתקדם';
+        return false;  // Break the each loop
+      }
+    });
 
     // Extract department/שיוך
     const departmentElement = $('p:contains("שיוך:")').first();
@@ -66,7 +81,7 @@ export async function parseCourseHtml(htmlContent: string):
                                 .text();
     const description = cleanText(descriptionText);
 
-    // Extract topics (under נושאי הלימוד)
+    // Extract topics
     const topics: string[] = [];
     $('ul li.bullets').each((_, elem) => {
       const topic = cleanText($(elem).text());
@@ -103,6 +118,10 @@ export async function parseCourseHtml(htmlContent: string):
 
     return {success: true, course: courseData};
   } catch (error) {
-    return {success: false, error: `Error parsing course HTML: ${error}`};
+    return {
+      success: false,
+      error: `Error parsing course HTML: ${
+          error instanceof Error ? error.message : String(error)}`
+    };
   }
 }

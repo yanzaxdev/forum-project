@@ -69,6 +69,8 @@ export const xTrans = {
     signIn: 'Sign In',
     signOut: 'Sign Out',
     signUp: 'Sign Up',
+    prerequisites: 'Prerequisites',
+    topics: 'Topics',
 
   },
   he: {
@@ -138,5 +140,7 @@ export const xTrans = {
     signIn: 'התחבר',
     signOut: 'התנתק',
     signUp: 'הרשם',
+    prerequisites: 'דרישות קדם',
+    topics: 'נושאים',
   },
 };
