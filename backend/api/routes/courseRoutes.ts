@@ -23,8 +23,6 @@ courseRouter.post(
     '/courses/rating',
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        console.log('Route handler triggered');
-        console.log('Request body:', req.body);
         await courseController.handleRatingPayload(req, res);
       } catch (error) {
         next(error);
@@ -43,7 +41,6 @@ courseRouter.get(
     });
 
 courseRouter.post('/test-post', (req, res) => {
-  // console.log('Test post route hit');
   res.json({message: 'Post working'});
 });
 
