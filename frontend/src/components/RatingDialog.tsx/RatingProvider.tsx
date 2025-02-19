@@ -3,10 +3,10 @@ import React, { createContext, useContext } from "react";
 
 // Type definitions
 export interface RatingContextType {
-  examDifficulty: number;
-  assignmentDifficulty: number;
-  interestLevel: number;
-  overallScore: number;
+  examDifficulty: string;
+  assignmentDifficulty: string;
+  interestLevel: string;
+  overallScore: string;
   overallComment: string;
 }
 
@@ -18,10 +18,10 @@ export interface RatingContextValue {
 }
 
 const INITIAL_RANKING_STATE: RatingContextType = {
-  examDifficulty: 0,
-  assignmentDifficulty: 0,
-  interestLevel: 0,
-  overallScore: 0,
+  examDifficulty: "0",
+  assignmentDifficulty: "0",
+  interestLevel: "0",
+  overallScore: "0",
   overallComment: "",
 };
 

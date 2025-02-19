@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CarouselItem } from "../ui/carousel";
 import { useLanguage } from "~/app/providers";
 import { Star } from "lucide-react";
@@ -28,10 +28,6 @@ export function RatingSlide({ category, api }: RatingSlideProps) {
   const [comment, setComment] = useState<string>(initComment ?? "");
 
   const { ratingState: ctx, setRatingContext } = useRating();
-
-  useEffect(() => {
-    localStorage.setItem("rating", JSON.stringify(ctx));
-  }, [rating, comment, ctx]);
 
   const handleStarClick = (starIndex: string) => {
     setRating(starIndex);
