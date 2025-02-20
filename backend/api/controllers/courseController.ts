@@ -3,8 +3,8 @@ import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
 import {z} from 'zod';
 
-import {db} from '../db';
-import {CourseRatingInsert, courseRatings, CourseRatingSchema, courses,} from '../db/schema';
+import {db} from '../../db';
+import {CourseRatingInsert, courseRatings, CourseRatingSchema, courses,} from '../../db/schema';
 
 interface CourseParams {
   id: string;
