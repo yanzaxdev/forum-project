@@ -9,17 +9,32 @@ dotenv.config();
 
 const app = express();
 
-// Set a custom Content Security Policy header
+// 1. Parse JSON bodies first
+app.use(express.json());
+
+// 2. Set up CORS before other middleware
+app.use(cors({
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
+
+// 3. Set CSP after CORS but before routes
 app.use((req, res, next) => {
   res.setHeader(
       'Content-Security-Policy',
-      'default-src \'self\' https://vercel.live; script-src \'self\' \'unsafe-inline\' https://vercel.live; style-src \'self\' \'unsafe-inline\';');
+      'default-src \'self\' https://vercel.live; ' +
+          'script-src \'self\' \'unsafe-inline\' \'unsafe-eval\' https://vercel.live; ' +
+          'style-src \'self\' \'unsafe-inline\'; ' +
+          'connect-src \'self\' https://vercel.live https://*.clerk.accounts.dev; ' +
+          'frame-src \'self\' https://vercel.live https://*.clerk.accounts.dev;');
   next();
 });
 
-app.use(express.json());
+// 4. Authentication middleware
 app.use(clerkMiddleware());
-app.use(cors({origin: process.env.CORS_ORIGIN}));
+
+// 5. Routes
 app.use('/api', courseRouter);
 
 app.get('/', (req, res) => {
