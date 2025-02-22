@@ -1,23 +1,23 @@
 import {relations} from 'drizzle-orm/relations';
 
-import {courseRatings, courses, users} from './schema';
+import {courseRankings, courses, users} from './schema';
 
 export const forumCourseRankingsRelations = relations(
-    courseRatings,
+    courseRankings,
     ({one}) => ({
       forumCourse:
           one(courses,
-              {fields: [courseRatings.courseId], references: [courses.id]}),
+              {fields: [courseRankings.courseId], references: [courses.id]}),
       forumUser:
-          one(users, {fields: [courseRatings.userId], references: [users.id]}),
+          one(users, {fields: [courseRankings.userId], references: [users.id]}),
     }));
 
 export const forumCourseRelations =
     relations(courses, ({many}) => ({
-                         courseRankings: many(courseRatings),
+                         courseRankings: many(courseRankings),
                        }));
 
 export const forumUsersRelations =
     relations(users, ({many}) => ({
-                       courseRankings: many(courseRatings),
+                       courseRankings: many(courseRankings),
                      }));
