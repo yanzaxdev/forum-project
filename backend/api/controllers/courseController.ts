@@ -1,7 +1,7 @@
 // controllers/courseController.ts
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
-import {z} from 'zod';
+import {ZodError} from 'zod';  // Import ZodError explicitly
 
 import {db} from '../../db';
 import {CourseRatingInsert, courseRatings, CourseRatingSchema, courses,} from '../../db/schema';
@@ -53,7 +53,6 @@ export const courseController = {
     try {
       const payload = CourseRatingSchema.parse(req.body);
 
-      // When inserting into courseRankings
       const parsedRating: CourseRatingInsert = {
         userId: payload.userId,
         courseId: payload.courseId,
@@ -66,16 +65,19 @@ export const courseController = {
         interestComment: payload.interestComment,
         overallScore: payload.overallScore.toString(),
         overallComment: payload.overallComment,
-
       };
-      await db.insert(courseRatings).values(parsedRating)
+
+      await db.insert(courseRatings).values(parsedRating);
       res.status(201).json({message: 'Rating submitted successfully'});
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      if (error instanceof ZodError) {  // Use imported ZodError
         res.status(400).json(
             {message: 'Validation error', errors: error.errors});
       } else {
-        res.status(500).json({message: 'Error submitting rating', error});
+        res.status(500).json({
+          message: 'Error submitting rating',
+          error: error instanceof Error ? error.message : 'Unknown error'
+        });
       }
     }
   },
