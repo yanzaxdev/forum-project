@@ -1,21 +1,23 @@
-import { relations } from "drizzle-orm/relations";
-import { forumCourses, forumCourseRatings, forumUsers } from "./schema";
+import {relations} from 'drizzle-orm/relations';
 
-export const forumCourseRatingsRelations = relations(forumCourseRatings, ({one}) => ({
-	forumCourse: one(forumCourses, {
-		fields: [forumCourseRatings.courseId],
-		references: [forumCourses.id]
-	}),
-	forumUser: one(forumUsers, {
-		fields: [forumCourseRatings.userId],
-		references: [forumUsers.id]
-	}),
-}));
+import {courseRatings, courses, users} from './schema';
 
-export const forumCoursesRelations = relations(forumCourses, ({many}) => ({
-	forumCourseRatings: many(forumCourseRatings),
-}));
+export const forumCourseRatingsRelations = relations(
+    courseRatings,
+    ({one}) => ({
+      forumCourse:
+          one(courses,
+              {fields: [courseRatings.courseId], references: [courses.id]}),
+      forumUser:
+          one(users, {fields: [courseRatings.userId], references: [users.id]}),
+    }));
 
-export const forumUsersRelations = relations(forumUsers, ({many}) => ({
-	forumCourseRatings: many(forumCourseRatings),
-}));
+export const forumCoursesRelations =
+    relations(courses, ({many}) => ({
+                         forumCourseRatings: many(courseRatings),
+                       }));
+
+export const forumUsersRelations =
+    relations(users, ({many}) => ({
+                       forumCourseRatings: many(courseRatings),
+                     }));
