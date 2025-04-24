@@ -10,20 +10,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "forum_users_id_seq",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cache": "1",
-            "cycle": false,
-            "schema": "public"
-          }
+          "notNull": true
         },
         "username": {
           "name": "username",
@@ -101,36 +90,19 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.forum_course_rankings": {
-      "name": "forum_course_rankings",
+    "public.forum_course_ratings": {
+      "name": "forum_course_ratings",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "forum_course_rankings_id_seq",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cache": "1",
-            "cycle": false,
-            "schema": "public"
-          }
-        },
         "course_id": {
           "name": "course_id",
-          "type": "integer",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -138,29 +110,59 @@
           "name": "grade",
           "type": "numeric(5, 2)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'0'"
+          "notNull": true
         },
         "exam_difficulty": {
           "name": "exam_difficulty",
           "type": "numeric(3, 2)",
           "primaryKey": false,
+          "notNull": true
+        },
+        "exam_comment": {
+          "name": "exam_comment",
+          "type": "text",
+          "primaryKey": false,
           "notNull": false,
-          "default": "'0'"
+          "default": "''"
         },
         "assignment_difficulty": {
           "name": "assignment_difficulty",
           "type": "numeric(3, 2)",
           "primaryKey": false,
+          "notNull": true
+        },
+        "assignment_comment": {
+          "name": "assignment_comment",
+          "type": "text",
+          "primaryKey": false,
           "notNull": false,
-          "default": "'0'"
+          "default": "''"
         },
         "interest_level": {
           "name": "interest_level",
           "type": "numeric(3, 2)",
           "primaryKey": false,
+          "notNull": true
+        },
+        "interest_comment": {
+          "name": "interest_comment",
+          "type": "text",
+          "primaryKey": false,
           "notNull": false,
-          "default": "'0'"
+          "default": "''"
+        },
+        "overall_score": {
+          "name": "overall_score",
+          "type": "numeric(3, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "overall_comment": {
+          "name": "overall_comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
         },
         "created_at": {
           "name": "created_at",
@@ -178,7 +180,7 @@
               "expression": "course_id",
               "asc": true,
               "nulls": "last",
-              "opclass": "int4_ops",
+              "opclass": "text_ops",
               "isExpression": false
             }
           ],
@@ -194,7 +196,7 @@
               "expression": "user_id",
               "asc": true,
               "nulls": "last",
-              "opclass": "int4_ops",
+              "opclass": "text_ops",
               "isExpression": false
             }
           ],
@@ -205,10 +207,10 @@
         }
       },
       "foreignKeys": {
-        "forum_course_rankings_course_id_forum_course_id_fk": {
-          "name": "forum_course_rankings_course_id_forum_course_id_fk",
-          "tableFrom": "forum_course_rankings",
-          "tableTo": "forum_course",
+        "forum_course_ratings_course_id_forum_courses_id_fk": {
+          "name": "forum_course_ratings_course_id_forum_courses_id_fk",
+          "tableFrom": "forum_course_ratings",
+          "tableTo": "forum_courses",
           "schemaTo": "public",
           "columnsFrom": [
             "course_id"
@@ -219,9 +221,9 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "forum_course_rankings_user_id_forum_users_id_fk": {
-          "name": "forum_course_rankings_user_id_forum_users_id_fk",
-          "tableFrom": "forum_course_rankings",
+        "forum_course_ratings_user_id_forum_users_id_fk": {
+          "name": "forum_course_ratings_user_id_forum_users_id_fk",
+          "tableFrom": "forum_course_ratings",
           "tableTo": "forum_users",
           "schemaTo": "public",
           "columnsFrom": [
@@ -249,26 +251,16 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.forum_course": {
-      "name": "forum_course",
+    "public.forum_courses": {
+      "name": "forum_courses",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "varchar(50)",
           "primaryKey": true,
           "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "forum_course_id_seq",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cache": "1",
-            "cycle": false,
-            "schema": "public"
-          }
+          "default": "'00000'"
         },
         "title_en": {
           "name": "title_en",
@@ -301,32 +293,17 @@
           "notNull": true,
           "default": "CURRENT_TIMESTAMP"
         },
-        "course_number": {
-          "name": "course_number",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'00000'"
-        },
         "level": {
           "name": "level",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'beginner'"
+          "notNull": true
         },
         "credit_points": {
           "name": "credit_points",
-          "type": "numeric(4, 2)",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'0'"
-        },
-        "department": {
-          "name": "department",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "grade_average": {
           "name": "grade_average",
@@ -362,14 +339,68 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'0'"
+        },
+        "department_he": {
+          "name": "department_he",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "department_en": {
+          "name": "department_en",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "topics_he": {
+          "name": "topics_he",
+          "type": "varchar(256)[]",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{\"RAY\"}'"
+        },
+        "topics_en": {
+          "name": "topics_en",
+          "type": "varchar(256)[]",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'{\"RAY\"}'"
+        },
+        "prerequisites_he": {
+          "name": "prerequisites_he",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prerequisites_en": {
+          "name": "prerequisites_en",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {
-        "course_department_idx": {
-          "name": "course_department_idx",
+        "course_department_en_idx": {
+          "name": "course_department_en_idx",
           "columns": [
             {
-              "expression": "department",
+              "expression": "department_en",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "text_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "course_department_he_idx": {
+          "name": "course_department_he_idx",
+          "columns": [
+            {
+              "expression": "department_he",
               "asc": true,
               "nulls": "last",
               "opclass": "text_ops",
@@ -385,7 +416,7 @@
           "name": "course_number_idx",
           "columns": [
             {
-              "expression": "course_number",
+              "expression": "id",
               "asc": true,
               "nulls": "last",
               "opclass": "text_ops",
@@ -432,15 +463,7 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "forum_course_course_number_unique": {
-          "columns": [
-            "course_number"
-          ],
-          "nullsNotDistinct": false,
-          "name": "forum_course_course_number_unique"
-        }
-      },
+      "uniqueConstraints": {},
       "checkConstraints": {},
       "policies": {},
       "isRLSEnabled": false
@@ -458,6 +481,21 @@
     "columns": {}
   },
   "internal": {
-    "tables": {}
+    "tables": {
+      "forum_courses": {
+        "columns": {
+          "topics_he": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "character varying(256)"
+          },
+          "topics_en": {
+            "isArray": true,
+            "dimensions": 1,
+            "rawType": "character varying(256)"
+          }
+        }
+      }
+    }
   }
 }
