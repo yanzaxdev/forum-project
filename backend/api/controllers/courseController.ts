@@ -2,7 +2,7 @@
 import {eq} from 'drizzle-orm';
 import {Request, Response} from 'express';
 
-import {Course, courses} from '../../db/schema';
+import {courses} from '../../db/schema';
 import {db} from '../db';
 
 interface CourseParams {
