@@ -18,7 +18,6 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
-import { RatingContextType } from "$/ranking";
 import { SignIn, useUser } from "@clerk/nextjs";
 import { RatingProvider } from "./RatingProvider";
 import { DialogDescription } from "@radix-ui/react-dialog";
@@ -171,3 +170,12 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
 };
 
 export default RatingDialog;
+
+interface RatingContextType {
+  examDifficulty: number;
+  assignmentDifficulty: number;
+  interestLevel: number;
+  overallScore: number;
+  overallComment: "";
+  userID: string;
+}

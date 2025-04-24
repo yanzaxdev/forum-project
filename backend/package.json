@@ -7,7 +7,7 @@
     "@vercel/postgres": "^0.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.38.2",
+    "drizzle-orm": "^0.38.4",
     "express": "^4.21.2",
     "pg": "^8.13.1",
     "tsc-alias": "^1.8.10",

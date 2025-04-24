@@ -71,7 +71,7 @@ export const courses = createTable(
       indexes: [
         index('course_department_en_idx').on(course.departmentEn),
         index('course_department_he_idx').on(course.departmentHe),
-        index('course_number_idx').on(course.id),
+        index('course_id_idx').on(course.id),
         index('course_title_en_idx').on(course.titleEn),
         index('course_title_he_idx').on(course.titleHe),
       ],
