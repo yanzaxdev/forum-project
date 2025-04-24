@@ -112,7 +112,7 @@
   }
   ,
   "include": [
-    "api/**/*.ts",
+    "api/**/*.ts", "api/db/schema.ts", "api/db/config/drizzle.ts"
 
   ],
   

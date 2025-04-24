@@ -24,6 +24,13 @@ const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
     );
   }
   const allCourses = result as Course[];
+  if (!allCourses || allCourses.length === 0) {
+    return (
+      <main dir={dir} className="mx-auto max-w-2xl px-4 py-8">
+        <p className="text-red-500">No courses found.</p>
+      </main>
+    );
+  }
 
   return (
     <main dir={dir} className="mx-auto max-w-2xl px-4 py-8">

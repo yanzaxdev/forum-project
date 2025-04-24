@@ -19,7 +19,7 @@ const CourseCard: FC<CourseCardProps> = ({ course }) => {
 
   const title = lang === Lang.EN ? course.titleEn : course.titleHe;
   const description =
-    lang === Lang.HE ? course.descriptionEn : course.descriptionHe;
+    lang === Lang.EN ? course.descriptionEn : course.descriptionHe;
   const formattedScore = course.overallScore
     ? Number(course.overallScore).toFixed(1)
     : "N/A";

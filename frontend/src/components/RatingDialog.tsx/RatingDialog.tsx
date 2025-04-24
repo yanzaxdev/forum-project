@@ -18,7 +18,9 @@ import { CarouselApi } from "../ui/carousel";
 import { Button } from "../ui/button";
 import { expressAPI } from "~/server/express";
 import { useMutation } from "@tanstack/react-query";
-import { RankingContextType } from "$/ranking";
+import { SignIn, useUser } from "@clerk/nextjs";
+import { RatingProvider } from "./RatingProvider";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface RankingDialogProps {
   isOpen: boolean;
@@ -26,11 +28,16 @@ interface RankingDialogProps {
   onComplete?: () => void;
 }
 
-const CATEGORIES: { name: RatingCategories }[] = [
-  { name: "examDifficulty" },
-  { name: "assignmentDifficulty" },
-  { name: "interestLevel" },
-  { name: "overallScore" },
+export interface RatingCategory {
+  name: RatingCategories;
+  rating: string;
+  comment?: string;
+}
+const CATEGORIES: RatingCategory[] = [
+  { name: RatingCategories.assignmentDifficulty, rating: "0", comment: "" },
+  { name: RatingCategories.examDifficulty, rating: "0", comment: "" },
+  { name: RatingCategories.interestLevel, rating: "0", comment: "" },
+  { name: RatingCategories.overallScore, rating: "0", comment: "" },
 ];
 
 const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
@@ -38,9 +45,11 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const user = useUser();
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const submitRating = useMutation({
-    mutationFn: async (data: RankingContextType) => {
+    mutationFn: async (data: RatingContextType) => {
       const response = await expressAPI.post("/api/rating", data);
       return response;
     },
@@ -79,32 +88,40 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
   };
 
   const onSubmit = async () => {
-    if (!isValid(rankingContext)) {
-      alert("Please fill in all fields");
+    if (user.isSignedIn) {
+      submitRating.mutate(ratingContext);
     }
-    submitRating.mutate(rankingContext);
+    if (!user.isSignedIn) {
+      setShowSignIn(true);
+      return;
+    }
   };
 
   // Calculate button states based on RTL
   const isAtStart = isRTL ? current === count - 1 : current === 0;
   const isAtEnd = isRTL ? current === 0 : current === count - 1;
 
-  const rankingContext: RankingContextType = {
-    examDifficulty: 0,
-    assignmentDifficulty: 0,
-    interestLevel: 0,
-    overallScore: 0,
-    overallComment: "",
-  };
+  const ratingContext: RatingContextType = React.useMemo(
+    () => ({
+      examDifficulty: 0,
+      assignmentDifficulty: 0,
+      interestLevel: 0,
+      overallScore: 0,
+      overallComment: "",
+      userID: user.isSignedIn ? user.user.id : "",
+    }),
+    [user.isSignedIn, user.user],
+  );
 
   return (
-    <RankingContext.Provider value={rankingContext}>
+    <RatingProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="mx-2 flex h-[70vh] w-[90vw] flex-col md:h-[400px] md:w-[500px]">
+        <DialogContent className="flex h-[70vh] w-[90vw] flex-col p-8 md:h-[400px] md:w-[500px]">
           <DialogHeader>
             <DialogTitle className="text-center">{}</DialogTitle>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
-
+          {showSignIn && <SignIn />}
           <Carousel
             opts={{
               direction: isRTL ? "rtl" : "ltr",
@@ -117,7 +134,7 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
                 <RatingSlide
                   api={api}
                   key={category.name}
-                  name={category.name}
+                  category={category}
                 />
               ))}
             </CarouselContent>
@@ -148,26 +165,17 @@ const RatingDialog: FC<RankingDialogProps> = ({ isOpen, onClose }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </RankingContext.Provider>
+    </RatingProvider>
   );
 };
 
 export default RatingDialog;
 
-export const RankingContext = React.createContext<RankingContextType>({
-  examDifficulty: 0,
-  assignmentDifficulty: 0,
-  interestLevel: 0,
-  overallScore: 0,
-  overallComment: "",
-});
-
-function isValid(context: RankingContextType) {
-  return (
-    context.examDifficulty > 0 &&
-    context.assignmentDifficulty > 0 &&
-    context.interestLevel > 0 &&
-    context.overallScore > 0 &&
-    context.overallComment !== ""
-  );
+interface RatingContextType {
+  examDifficulty: number;
+  assignmentDifficulty: number;
+  interestLevel: number;
+  overallScore: number;
+  overallComment: "";
+  userID: string;
 }

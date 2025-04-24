@@ -8,10 +8,11 @@ import { cn } from "~/lib/utils";
 import { useLanguage } from "~/app/providers";
 import { Button } from "./ui/button";
 import { SheetTrigger } from "./ui/sheet";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const NavBar: FC = () => {
   const { theme, setTheme } = useTheme();
-  const { isRTL, translation: t, langParam } = useLanguage();
+  const { isRTL, translation, langParam } = useLanguage();
 
   const handleThemeToggle = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -34,10 +35,12 @@ const NavBar: FC = () => {
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className={COMMON_HOVER_CLASSES}>
             <Menu className="h-5 w-5" />
-            <span className="sr-only">Open menu</span>
           </Button>
         </SheetTrigger>
 
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
         <Link
           href={`/${langParam}`}
           className={cn(
@@ -47,9 +50,13 @@ const NavBar: FC = () => {
           )}
         >
           <House className="h-5 w-5" />
-          <span className="sr-only">Home</span>
         </Link>
 
+        <SignedOut>
+          <SignInButton>
+            <Button>{translation.signIn}</Button>
+          </SignInButton>
+        </SignedOut>
         <Link
           href={`/courses${langParam}`}
           className={cn(
@@ -58,7 +65,7 @@ const NavBar: FC = () => {
             COMMON_HOVER_CLASSES,
           )}
         >
-          {t.courses}
+          {translation.courses}
         </Link>
       </div>
 
